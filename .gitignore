@@ -1,0 +1,13 @@
+# Données patients CONFIDENTIELLES - jamais sur GitHub
+*.csv
+*.parquet
+
+# Environnement virtuel - trop lourd
+dagster_env/
+__pycache__/
+.tmp_dagster_home_*/
+*.pid
+
+# Fichiers temporaires
+*.pyc
+.env
