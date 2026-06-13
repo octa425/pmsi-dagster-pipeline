@@ -1,0 +1,7 @@
+dagster
+dagster-webserver
+polars
+psycopg2-binary
+pandas
+openpyxl
+pyarrow
