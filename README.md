@@ -2,20 +2,12 @@
 Pipeline ETL/ELT de données hospitalières PMSI-MCO — Dagster, Polars, PostgreSQL, DBT | Analyse épidémio-économique : BPCO, Insuffisance Cardiaque, Tarifs ATIH 2026
 ## Avertissement méthodologique
 
-La jointure entre les séjours et les tarifs ATIH est realisee
-sur la cle GHS/GHM a titre purement demonstratif.
+## ⚠️ Nature des données
 
-Dans un contexte de production reel, cette jointure devrait
-se baser sur une correspondance au NDA qui est le numéro de séjour et les GHM via le fichier ATIH pour éviter 
-d'associer des tarifs de pathologies differentes partageant
-le meme GHM.
+L'ensemble des résultats présentés dans ce projet (volumétrie des séjours, coûts ATIH, taux de réadmission) a été produit à partir d'un jeu de données **entièrement simulé** (`DATA_SET_SIMULE.csv`, environ 3 000 séjours), généré pour reproduire la structure et la volumétrie d'un export PMSI réel (NIP, NDA, GHM, GHS, codes CIM-10, dates de séjour). **Aucune donnée patient réelle n'a été utilisée à aucune étape de ce projet.** Ce choix garantit la conformité RGPD tout en permettant de démontrer un pipeline ETL/ELT complet sur un cas d'usage réaliste. Le fichier est disponible dans ce repo pour reproduire le pipeline de bout en bout.
 
-Un patient avec hepatite B et un patient avec insuffisance
-cardiaque peuvent partager le meme GHM - notre jointure
-ramenerait alors un tarif incorrect.
+## Avertissement méthodologique
 
-Les resultats financiers presentes ne constituent pas
-une analyse medico-economique certifiee. Ils sont produits
-dans un contexte de demonstration technique, en l'absence
-des tables de correspondance CIM-10 vers GHM officielles.
-**Mode Entraînement :** Pour tester et exécuter ce pipeline Dagster, un jeu de données réaliste de près de 3 000 séjours simulés est mis à disposition directement dans le fichier `DATA_SET_SIMULE.csv`. Vous pouvez le télécharger pour vous exercer !
+La jointure entre les séjours et les tarifs ATIH est réalisée sur la clé GHS/GHM à titre purement démonstratif.
+
+Dans un contexte de production réel, cette jointure devrait se baser sur une correspondance au NDA (numéro de séjour) couplée aux GHM via le fichier ATIH, afin d'éviter d'associer des tarifs de pathologies différentes partageant le même GHM. Un patient avec hépatite B et un patient avec insuffisance cardiaque peuvent partager le même GHM — notre jointure ramènerait alors un tarif incorrect.
