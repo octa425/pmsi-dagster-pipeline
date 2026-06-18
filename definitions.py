@@ -6,7 +6,7 @@ from dagster import asset, Definitions, Config
 
 
 class ConfigPipeline(Config):
-    chemin_csv: str = "/mnt/d/BUREAU/DATA_TRAVAIL.csv"
+    chemin_csv: str = "/mnt/d/BUREAU/DATA_SET_SIMULE.csv"
 
 
 @asset
