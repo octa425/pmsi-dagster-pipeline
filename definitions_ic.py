@@ -15,7 +15,7 @@ def raw_mco_ic():
     Lit le fichier CSV MCO et extrait toutes les colonnes
     utiles dont GHM et GHS pour la jointure ATIH.
     """
-    fichier = "/mnt/d/BUREAU/EX780762_RAP_CCH_2021_22_8_2022.csv"
+    fichier = "/mnt/d/BUREAU/DATA_TRAVAIL.csv"
 
     with open(fichier, "r", encoding="windows-1252") as f:
         reader = csv.reader(f, delimiter=";")
