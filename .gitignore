@@ -11,3 +11,4 @@ __pycache__/
 # Fichiers temporaires
 *.pyc
 .env
+*.pkl
