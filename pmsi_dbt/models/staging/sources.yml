@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: pmsi_raw
+    description: "Tables brutes PMSI MCO dans PostgreSQL"
+    database: hopital
+    schema: public
+    tables:
+      - name: t_mco_b
+        description: "Résumés de Sortie Anonymisés"
+      - name: t_mco_c
+        description: "Table de chainage NIR"
+      - name: t_mco_d
+        description: "Diagnostics associés"
+      - name: t_mco_gv
+        description: "Valorisation GHM"
+      - name: ir_ben_r
+        description: "Référentiel bénéficiaires"
+      - name: er_prs_f
+        description: "Prestations DCIR"
+      - name: er_pha_f
+        description: "Pharmacie affinée"
