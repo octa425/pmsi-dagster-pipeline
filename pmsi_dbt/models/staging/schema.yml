@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: stg_mco_b
+    description: "Résumés de Sortie Anonymisés nettoyés"
+    columns:
+      - name: eta_num
+        description: "Numéro FINESS établissement"
+        tests:
+          - not_null
+
+      - name: rsa_num
+        description: "Numéro séjour"
+        tests:
+          - not_null
+
+      - name: age_annees
+        description: "Age en années — toujours >= 18"
+        tests:
+          - not_null
+
+      - name: sexe
+        description: "Sexe patient"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['1', '2']
+
+      - name: departement
+        description: "Code département — toujours 9C"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['9C']
+
+  - name: stg_mco_c
+    description: "Table de chaînage NIR nettoyée"
+    columns:
+      - name: nir_patient
+        description: "NIR anonymisé — jamais NULL"
+        tests:
+          - not_null
+
+      - name: date_entree
+        description: "Date entrée séjour"
+        tests:
+          - not_null
+
+      - name: date_sortie
+        description: "Date sortie séjour"
+        tests:
+          - not_null
+
+  - name: stg_mco_d
+    description: "Diagnostics associés nettoyés"
+    columns:
+      - name: eta_num
+        tests:
+          - not_null
+      - name: rsa_num
+        tests:
+          - not_null
+      - name: code_comorbidite
+        tests:
+          - not_null
+
