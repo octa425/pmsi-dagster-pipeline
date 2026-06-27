@@ -26,7 +26,7 @@ Les résultats financiers présentés ne constituent pas une analyse médico-éc
 
 ---
 
-### Étape 1 — Cloner le dépôt
+### Étape 1 : Cloner le dépôt
 
 ```bash
 git clone https://github.com/octa425/pmsi-dagster-pipeline.git
