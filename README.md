@@ -13,7 +13,7 @@ La jointure entre les séjours et les tarifs ATIH est réalisée sur la clé GHS
 Dans un contexte de production réel, cette jointure devrait se baser sur une correspondance au NDA (numéro de séjour) couplée aux GHM via le fichier ATIH, afin d'éviter d'associer des tarifs de pathologies différentes partageant le même GHM. Un patient avec hépatite B et un patient avec insuffisance cardiaque peuvent partager le même GHM : notre jointure ramènerait alors un tarif incorrect.
 
 Les résultats financiers présentés ne constituent pas une analyse médico-économique certifiée. Ils sont produits dans un contexte de démonstration technique, en l'absence des tables de correspondance CIM-10 vers GHM officielles.
-## 🚀 Démarrage rapide — Reproduire le pipeline
+## 🚀 Démarrage rapide: Reproduire le pipeline
 
 ### Prérequis
 
@@ -35,7 +35,7 @@ cd pmsi-dagster-pipeline
 
 ---
 
-### Étape 2 — Installer PostgreSQL
+### Étape 2 : Installer PostgreSQL
 
 ```bash
 sudo apt update
@@ -58,7 +58,7 @@ ALTER USER postgres PASSWORD '<CHANGE_ME>';
 
 ---
 
-### Étape 3 — Créer la base de données
+### Étape 3 : Créer la base de données
 
 ```bash
 sudo -u postgres createdb hopital
@@ -72,7 +72,7 @@ psql -h localhost -U postgres -l
 
 ---
 
-### Étape 4 — Créer l'environnement virtuel
+### Étape 4 : Créer l'environnement virtuel
 
 ```bash
 python3 -m venv dagster_env
@@ -81,7 +81,7 @@ source dagster_env/bin/activate
 
 ---
 
-### Étape 5 — Installer les dépendances
+### Étape 5 : Installer les dépendances
 
 ```bash
 pip install -r requirements_docker.txt
@@ -89,7 +89,7 @@ pip install -r requirements_docker.txt
 
 ---
 
-### Étape 6 — Lancer Dagster
+### Étape 6 : Lancer Dagster
 
 ```bash
 dagster dev -f definitions_ic.py -h 0.0.0.0 -p 3000
@@ -100,7 +100,7 @@ afin d'exécuter l'ensemble du pipeline.
 
 ---
 
-### Étape 7 — Vérifier les données chargées
+### Étape 7 : Vérifier les données chargées
 
 ```bash
 psql -h localhost -U postgres -d hopital
@@ -114,7 +114,7 @@ Le résultat attendu est **2 312 séjours** chargés dans PostgreSQL.
 
 ---
 
-### Étape 8 — Lancer l'agent IA (optionnel)
+### Étape 8  Lancer l'agent IA (optionnel)
 
 Installer Ollama :
 
@@ -198,3 +198,41 @@ docker run -p 3000:3000 pmsi-dagster
 | Linux / WSL | Environnement d'exécution |
 
 ---
+## Pipeline DBT PMSI
+
+Modélisation SQL en 3 couches sur données PMSI simulées.
+Reproduction du pipeline SAS de l'ORS Guyane en SQL.
+
+### Structure
+
+- `staging/` → Nettoyage des tables brutes
+  - `stg_mco_b.sql` → T_MCO_B nettoyée
+  - `stg_mco_c.sql` → Chaînage NIR + 7 contrôles qualité
+  - `stg_mco_d.sql` → Comorbidités avec libellés
+
+- `intermediate/` → Logique métier PMSI
+  - `int_filtres_pmsi.sql` → Reproduction FILTRESS973 SAS
+  - `int_cohorte_avc.sql` → Sélection I60-I64 + G46
+
+- `marts/` → Tables analytiques finales
+  - `mart_survie_avc.sql` → Mortalité J30 et J365
+
+### Lancer DBT
+
+```bash
+cd pmsi_dbt
+dbt run    # Exécuter tous les models
+dbt test   # Lancer les 13 tests qualité
+dbt docs serve  # Documentation interactive
+```
+
+### Résultats (données simulées)
+
+| Indicateur | Résultat |
+|---|---|
+| Patients AVC identifiés | 400 |
+| Mortalité à J30 | 13.5% |
+| Mortalité à J365 | 23.2% |
+| Survie à J30 | 86.5% |
+| Survie à J365 | 76.8% |
+| Tests qualité | 13 ✅ |
