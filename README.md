@@ -1,5 +1,13 @@
 # pmsi-dagster-pipeline
 
+![CI](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Dagster](https://img.shields.io/badge/Dagster-orchestration-green)
+![DBT](https://img.shields.io/badge/DBT-modélisation-orange)
+![Docker](https://img.shields.io/badge/Docker-conteneurisation-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-hopital-blue)
+![RGPD](https://img.shields.io/badge/Données-Simulées-orange)
+
 Pipeline ETL/ELT de données hospitalières PMSI-MCO: Dagster, Polars, PostgreSQL, DBT | Analyse épidémio-économique : BPCO, Insuffisance Cardiaque, Tarifs ATIH 2026
 
 ## ⚠️ Nature des données
