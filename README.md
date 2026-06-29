@@ -2,7 +2,6 @@
 
 ![CI/CD](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
 
-![CI](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Dagster](https://img.shields.io/badge/Dagster-orchestration-green)
 ![DBT](https://img.shields.io/badge/DBT-modélisation-orange)
