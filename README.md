@@ -1,5 +1,7 @@
 # pmsi-dagster-pipeline
 
+![CI/CD](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
+
 ![CI](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Dagster](https://img.shields.io/badge/Dagster-orchestration-green)
@@ -244,3 +246,20 @@ dbt docs serve  # Documentation interactive
 | Survie à J30 | 86.5% |
 | Survie à J365 | 76.8% |
 | Tests qualité | 13 ✅ |
+
+## Résultats BPCO et Insuffisance Cardiaque
+### BPCO :  Exacerbations
+| Indicateur | Résultat |
+|---|---|
+| Séjours BPCO analysés | 668 |
+| Taux réadmission J30 | 18.2% |
+| Coût moyen séjour | 4 127 € |
+| DMS moyenne | 7.3 jours |
+### Insuffisance Cardiaque
+| Indicateur | Résultat |
+|---|---|
+| Séjours IC analysés | 2 312 |
+| Coût total | 13 061 256 € |
+| Coût moyen séjour | 5 649 € |
+| Taux réadmission J30 | 22.4% |
+| GHM le plus fréquent | 05M09 — Insuffisance cardiaque |
