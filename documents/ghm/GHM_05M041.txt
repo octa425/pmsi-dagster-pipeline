@@ -1,0 +1,13 @@
+CODE GHM : 05M041
+LIBELLE : Infarctus aigu du myocarde, niveau de sévérité 1
+CMD : 05 - Affections de l'appareil circulatoire
+TYPE : GHM médical (M), niveau de sévérité 1 (le moins sévère, sur une échelle de 1 à 4)
+
+DESCRIPTION :
+Ce GHM regroupe les séjours hospitaliers dont le diagnostic principal est un infarctus aigu du myocarde (souvent codé I21.x en CIM-10), pris en charge médicalement (sans acte chirurgical classant). Le niveau 1 correspond à une prise en charge standard, sans complication ni comorbidité associée significative (CMA) de poids important.
+
+NIVEAUX DE SEVERITE :
+Les GHM de cette racine se déclinent de 05M041 (niveau 1, le plus simple) à 05M044 (niveau 4, le plus sévère). Le niveau dépend des diagnostics associés significatifs (DAS) présents dans le séjour, de l'âge du patient, et de la durée de séjour.
+
+CONTEXTE PMSI :
+Le classement dans ce GHM se fait automatiquement par l'algorithme de groupage à partir du diagnostic principal (DP), du diagnostic relié (DR) et des diagnostics associés (DAS) du séjour.

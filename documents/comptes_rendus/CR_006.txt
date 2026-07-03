@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 74 ans
+Motif d'entrée : Décompensation respiratoire aiguë
+Diagnostic principal : BPCO avec infection aiguë des voies respiratoires inférieures (J44.0)
+Diagnostics associés : Hypertension artérielle (I10)
+
+RESUME CLINIQUE :
+Patient BPCO connu, admis pour décompensation respiratoire dans un contexte de surinfection bronchique. Mise sous oxygénothérapie, bronchodilatateurs et antibiothérapie. Surveillance de la tension artérielle pendant le traitement.
+
+EVOLUTION :
+Amélioration progressive de la fonction respiratoire. Sortie à J5 avec réévaluation du traitement de fond BPCO.
+
+GROUPAGE PMSI :
+GHM : rattaché à une racine de la CMD 04 (Affections de l'appareil respiratoire)
+Durée de séjour : 5 jours

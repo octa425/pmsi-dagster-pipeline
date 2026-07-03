@@ -1,0 +1,9 @@
+CODE CIM-10 : J44.0
+LIBELLE : Bronchopneumopathie chronique obstructive (BPCO) avec infection aiguë des voies respiratoires inférieures
+CHAPITRE : X - Maladies de l'appareil respiratoire
+
+DESCRIPTION :
+Décompensation d'une BPCO déclenchée par une infection aiguë des voies respiratoires basses (bronchite, pneumonie surajoutée). C'est l'une des causes les plus fréquentes d'hospitalisation en urgence chez les patients BPCO.
+
+USAGE PMSI :
+Diagnostic principal orientant vers une racine de GHM respiratoire (CMD 04).

@@ -1,0 +1,11 @@
+REFERENTIEL PMSI : Comorbidités fréquentes en médecine polyvalente
+
+Ce référentiel liste les comorbidités les plus fréquemment rencontrées en diagnostic associé chez les patients hospitalisés pour une pathologie cardiovasculaire ou respiratoire :
+
+- Diabète de type 2 (E11.9) : très fréquent, impacte la gestion des traitements (corticoïdes, diurétiques) et le risque infectieux.
+- Hypertension artérielle (I10) : comorbidité quasi systématique chez les patients cardiaques.
+- Maladie rénale chronique (N18.x) : complique la gestion des traitements diurétiques et de certains médicaments à élimination rénale.
+- Antécédent d'anticoagulants (Z92.1) : impose une vigilance particulière sur le risque hémorragique pendant l'hospitalisation.
+
+INTERET POUR LE CODAGE PMSI :
+Ces comorbidités, quand elles sont correctement identifiées et codées en DAS, peuvent faire monter le niveau de sévérité du séjour et donc mieux refléter la charge en soins réelle et la valorisation tarifaire associée.

@@ -1,0 +1,9 @@
+CODE CIM-10 : I10
+LIBELLE : Hypertension artérielle essentielle (primitive)
+CHAPITRE : IX - Maladies de l'appareil circulatoire
+
+DESCRIPTION :
+Hypertension artérielle sans cause secondaire identifiée (par opposition à une hypertension secondaire à une autre pathologie, par exemple rénale).
+
+USAGE PMSI :
+Comorbidité très fréquente, souvent codée en DAS lors de séjours pour pathologie cardiovasculaire (insuffisance cardiaque, infarctus). Peut contribuer au classement en niveau de sévérité supérieur selon les listes de CMA en vigueur.

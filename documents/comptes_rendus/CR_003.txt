@@ -1,0 +1,18 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 91 ans
+Motif d'entrée : Choc cardiogénique
+Diagnostic principal : Insuffisance cardiaque, sans précision (I50.9)
+Diagnostics associés : Diabète de type 2 (E11.9), Hypertension artérielle (I10), Maladie rénale chronique stade 3 (N18.3)
+
+RESUME CLINIQUE :
+Patient très âgé, polypathologique, admis en état de choc circulatoire d'origine cardiaque. Prise en charge en unité de soins intensifs avec support hémodynamique. Trois comorbidités significatives associées (diabète, HTA, insuffisance rénale) compliquant fortement la prise en charge.
+
+EVOLUTION :
+Séjour prolongé et complexe en raison du terrain polypathologique. Amélioration lente, transfert en médecine à J12.
+
+GROUPAGE PMSI :
+GHM : 05M093 (Insuffisances cardiaques et états de choc circulatoire, niveau 3)
+Durée de séjour : 18 jours
+
+NOTE : Le cumul de plusieurs comorbidités significatives (DAS multiples) explique le classement en niveau de sévérité 3.

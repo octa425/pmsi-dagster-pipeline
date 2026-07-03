@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 88 ans
+Motif d'entrée : Dyspnée, palpitations
+Diagnostic principal : Insuffisance cardiaque congestive (I50.0)
+Diagnostics associés : Antécédent d'anticoagulants au long cours (Z92.1), Diabète de type 2 (E11.9), Hypertension artérielle (I10)
+
+RESUME CLINIQUE :
+Patient présentant une fibrillation auriculaire connue sous anticoagulants, admis pour décompensation cardiaque congestive. Trois comorbidités associées significatives (cardiovasculaire, métabolique, tensionnel) rendant la prise en charge complexe, notamment le risque hémorragique sous anticoagulant à surveiller pendant le traitement diurétique.
+
+EVOLUTION :
+Stabilisation progressive. Sortie à J11 avec réévaluation cardiologique programmée.
+
+GROUPAGE PMSI :
+GHM : 05M092 (Insuffisances cardiaques et états de choc circulatoire, niveau 2)
+Durée de séjour : 11 jours

@@ -1,0 +1,9 @@
+CODE CIM-10 : M16.0
+LIBELLE : Coxarthrose bilatérale primitive (arthrose de hanche, primitive, des deux côtés)
+CHAPITRE : XIII - Maladies du système ostéo-articulaire, des muscles et du tissu conjonctif
+
+DESCRIPTION :
+Usure du cartilage des deux articulations de la hanche, d'origine primitive (sans cause secondaire identifiée comme un traumatisme ou une malformation). Motif fréquent de chirurgie orthopédique (prothèse de hanche).
+
+USAGE PMSI :
+Diagnostic principal typique en chirurgie orthopédique programmée, orientant vers une racine de GHM de la CMD 08 (Affections et traumatismes de l'appareil musculo-squelettique et du tissu conjonctif).

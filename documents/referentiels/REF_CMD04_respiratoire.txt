@@ -1,0 +1,12 @@
+REFERENTIEL PMSI : CMD 04 - Affections de l'appareil respiratoire
+
+DESCRIPTION :
+La CMD 04 regroupe les séjours dont le diagnostic principal relève de l'appareil respiratoire : pneumonies, BPCO, asthme, embolies pulmonaires, insuffisances respiratoires, etc.
+
+PATHOLOGIES FREQUENTES :
+- Pneumonies (codes J18.x)
+- BPCO et ses décompensations (codes J44.x)
+- Insuffisances respiratoires aiguës ou chroniques
+
+CONTEXTE :
+Les pathologies respiratoires sont une cause fréquente d'hospitalisation en urgence, en particulier chez les patients âgés ou fumeurs. Les décompensations de BPCO sont l'une des causes les plus fréquentes de réhospitalisation en médecine.

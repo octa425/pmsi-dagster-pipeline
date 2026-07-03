@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Femme, 69 ans
+Motif d'entrée : Essoufflement croissant depuis 48h
+Diagnostic principal : BPCO avec exacerbation aiguë, sans précision (J44.1)
+Diagnostics associés : Aucun DAS significatif identifié
+
+RESUME CLINIQUE :
+Patiente BPCO stade modéré, admise pour exacerbation aiguë sans cause infectieuse clairement identifiée. Prise en charge symptomatique par bronchodilatateurs et corticothérapie courte.
+
+EVOLUTION :
+Amélioration rapide. Sortie à J3.
+
+GROUPAGE PMSI :
+GHM : rattaché à une racine de la CMD 04 (Affections de l'appareil respiratoire)
+Durée de séjour : 3 jours

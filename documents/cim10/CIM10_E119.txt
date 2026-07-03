@@ -1,0 +1,9 @@
+CODE CIM-10 : E11.9
+LIBELLE : Diabète sucré de type 2, sans complication
+CHAPITRE : IV - Maladies endocriniennes, nutritionnelles et métaboliques
+
+DESCRIPTION :
+Diabète de type 2 (non insulino-dépendant à l'origine) sans mention de complication associée (pas de complication rénale, oculaire, neurologique ou vasculaire précisée dans le code).
+
+USAGE PMSI :
+Ce code apparaît fréquemment en diagnostic associé significatif (DAS) chez les patients hospitalisés pour une autre pathologie (cardiaque, respiratoire), car le diabète est une comorbidité très fréquente qui peut influencer le niveau de sévérité du séjour.

@@ -1,0 +1,9 @@
+CODE CIM-10 : I50.1
+LIBELLE : Insuffisance cardiaque gauche (insuffisance ventriculaire gauche)
+CHAPITRE : IX - Maladies de l'appareil circulatoire
+
+DESCRIPTION :
+Forme d'insuffisance cardiaque où c'est spécifiquement le ventricule gauche qui ne parvient plus à assurer un débit sanguin efficace, entraînant typiquement une congestion pulmonaire (dyspnée, œdème aigu du poumon dans les formes aiguës).
+
+USAGE PMSI :
+Diagnostic principal fréquent orientant vers la racine GHM 05M09.

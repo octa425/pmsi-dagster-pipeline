@@ -1,0 +1,12 @@
+PROCEDURE PMSI : Glossaire des sigles courants
+
+PMSI : Programme de Médicalisation des Systèmes d'Information - dispositif de description médico-économique de l'activité hospitalière en France.
+GHM : Groupe Homogène de Malades - catégorie regroupant des séjours ayant un profil médical et un coût de prise en charge similaires.
+GHS : Groupe Homogène de Séjours - tarif de remboursement associé à un GHM.
+CMD : Catégorie Majeure de Diagnostic - grande famille de pathologies (par système fonctionnel : circulatoire, respiratoire, digestif...) à laquelle appartient un GHM.
+DP : Diagnostic Principal - motif d'hospitalisation ayant mobilisé l'essentiel des ressources.
+DR : Diagnostic Relié - diagnostic complémentaire au DP dans certains cas particuliers.
+DAS : Diagnostic Associé Significatif - comorbidité ou complication ayant impacté la prise en charge.
+CMA : Comorbidité Associée - DAS appartenant à une liste reconnue par l'ATIH comme influençant le niveau de sévérité.
+ATIH : Agence Technique de l'Information sur l'Hospitalisation - organisme qui définit et fait évoluer la classification des GHM.
+CIM-10 : Classification Internationale des Maladies, 10e révision - nomenclature utilisée pour coder les diagnostics.

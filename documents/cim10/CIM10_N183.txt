@@ -1,0 +1,9 @@
+CODE CIM-10 : N18.3
+LIBELLE : Maladie rénale chronique, stade 3
+CHAPITRE : XIV - Maladies de l'appareil génito-urinaire
+
+DESCRIPTION :
+Insuffisance rénale chronique modérée (stade 3 sur une échelle de 1 à 5, mesurée par le débit de filtration glomérulaire). Comorbidité fréquente chez les patients cardiaques ou diabétiques.
+
+USAGE PMSI :
+Apparaît généralement en diagnostic associé significatif (DAS), notamment chez des patients hospitalisés pour insuffisance cardiaque — cette comorbidité peut faire monter le niveau de sévérité du séjour.

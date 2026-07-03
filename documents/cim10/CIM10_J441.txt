@@ -1,0 +1,9 @@
+CODE CIM-10 : J44.1
+LIBELLE : BPCO avec exacerbation aiguë, sans précision
+CHAPITRE : X - Maladies de l'appareil respiratoire
+
+DESCRIPTION :
+Aggravation brutale des symptômes d'une BPCO (essoufflement accru, toux, expectoration) sans qu'une cause infectieuse précise soit spécifiée dans le codage — à distinguer de J44.0 qui précise une origine infectieuse.
+
+USAGE PMSI :
+Diagnostic principal fréquent en hospitalisation pour décompensation de BPCO.

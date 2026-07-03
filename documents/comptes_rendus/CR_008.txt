@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 58 ans
+Motif d'entrée : Douleurs abdominales, diarrhées
+Diagnostic principal : Gastro-entérite et colite non infectieuses, sans précision (K52.9)
+Diagnostics associés : Aucun DAS significatif identifié
+
+RESUME CLINIQUE :
+Patient admis pour syndrome digestif aigu sans étiologie infectieuse retrouvée aux prélèvements. Réhydratation et traitement symptomatique.
+
+EVOLUTION :
+Résolution rapide des symptômes. Sortie à J2.
+
+GROUPAGE PMSI :
+GHM : rattaché à une racine de la CMD 06 (Affections de l'appareil digestif)
+Durée de séjour : 2 jours

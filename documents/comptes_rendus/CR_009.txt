@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Femme, 81 ans
+Motif d'entrée : Douleur chronique de hanche, impotence fonctionnelle
+Diagnostic principal : Coxarthrose bilatérale primitive (M16.0)
+Diagnostics associés : Examen médical général pré-opératoire (Z00.0)
+
+RESUME CLINIQUE :
+Patiente prise en charge pour pose programmée de prothèse totale de hanche bilatérale dans un contexte de coxarthrose invalidante. Bilan pré-opératoire standard réalisé (code Z00.0).
+
+EVOLUTION :
+Suites opératoires simples. Rééducation débutée précocement. Sortie à J8 vers un centre de rééducation.
+
+GROUPAGE PMSI :
+GHM : rattaché à une racine de la CMD 08 (Affections de l'appareil musculo-squelettique)
+Durée de séjour : 8 jours

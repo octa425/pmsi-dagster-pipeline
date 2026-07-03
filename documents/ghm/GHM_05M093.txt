@@ -1,0 +1,10 @@
+CODE GHM : 05M093
+LIBELLE : Insuffisances cardiaques et états de choc circulatoire, niveau de sévérité 3
+CMD : 05 - Affections de l'appareil circulatoire
+TYPE : GHM médical (M), niveau de sévérité 3
+
+DESCRIPTION :
+Niveau 3 de la racine 05M09 : séjours pour insuffisance cardiaque ou état de choc circulatoire avec comorbidités associées significatives plus lourdes que le niveau 2, impliquant généralement une prise en charge plus complexe, une durée de séjour plus longue et un tarif GHS plus élevé.
+
+CONTEXTE PMSI :
+Un patient présentant une insuffisance cardiaque avec plusieurs comorbidités sévères (par exemple insuffisance rénale chronique stade 3 codée N18.3, associée à un diabète et une hypertension) peut être classé à ce niveau si ces diagnostics associés sont correctement codés en DAS.

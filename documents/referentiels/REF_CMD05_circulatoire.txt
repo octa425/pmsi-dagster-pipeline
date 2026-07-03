@@ -1,0 +1,15 @@
+REFERENTIEL PMSI : CMD 05 - Affections de l'appareil circulatoire
+
+DESCRIPTION :
+La CMD 05 regroupe les séjours dont le diagnostic principal relève de l'appareil cardiovasculaire (cœur, vaisseaux) : infarctus, insuffisance cardiaque, troubles du rythme, hypertension compliquée, chirurgie cardiaque, etc.
+
+RACINES PRINCIPALES DE CETTE CMD :
+- 05M04 : Infarctus aigu du myocarde
+- 05M08 : Arythmies et troubles de la conduction cardiaque
+- 05M09 : Insuffisances cardiaques et états de choc circulatoire
+- 05M10 : Cardiopathies congénitales et valvulopathies (âge < 18 ans)
+- 05M11 : Cardiopathies congénitales et valvulopathies (âge > 17 ans)
+- 05M12 : Troubles vasculaires périphériques
+
+CONTEXTE :
+Cette CMD est l'une des plus fréquentes en médecine, notamment chez les patients âgés polypathologiques, où les comorbidités (diabète, insuffisance rénale, hypertension) sont très souvent associées au diagnostic principal.

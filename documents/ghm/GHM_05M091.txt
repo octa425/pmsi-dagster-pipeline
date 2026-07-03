@@ -1,0 +1,13 @@
+CODE GHM : 05M091
+LIBELLE : Insuffisances cardiaques et états de choc circulatoire, niveau de sévérité 1
+CMD : 05 - Affections de l'appareil circulatoire
+TYPE : GHM médical (M), niveau de sévérité 1
+
+DESCRIPTION :
+Ce GHM regroupe les séjours dont le diagnostic principal est une insuffisance cardiaque (codes I50.x en CIM-10) ou un état de choc d'origine circulatoire. Le niveau 1 correspond à une prise en charge sans comorbidité associée significative majeure.
+
+NIVEAUX DE SEVERITE :
+Cette racine (05M09) se décline en 4 niveaux : 05M091 (niveau 1) à 05M094 (niveau 4), plus un GHM de très courte durée (05M09T) pour les séjours de 0 à 2 jours.
+
+CONTEXTE PMSI :
+L'insuffisance cardiaque est une pathologie chronique fréquente chez les patients âgés, souvent associée à des comorbidités comme l'hypertension artérielle, le diabète ou l'insuffisance rénale chronique — ces comorbidités, si elles sont codées en DAS, peuvent faire monter le séjour vers un niveau de sévérité supérieur.

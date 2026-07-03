@@ -1,0 +1,9 @@
+CODE CIM-10 : Z00.0
+LIBELLE : Examen médical général
+CHAPITRE : XXI - Facteurs influant sur l'état de santé et motifs de recours aux services de santé
+
+DESCRIPTION :
+Code utilisé pour un examen de santé général, sans plainte ni diagnostic spécifique associé — souvent un bilan de routine ou de contrôle.
+
+USAGE PMSI :
+Peut apparaître en diagnostic associé dans des contextes de bilan pré ou post-opératoire.

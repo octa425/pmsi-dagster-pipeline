@@ -1,0 +1,10 @@
+CODE GHM : 05M092
+LIBELLE : Insuffisances cardiaques et états de choc circulatoire, niveau de sévérité 2
+CMD : 05 - Affections de l'appareil circulatoire
+TYPE : GHM médical (M), niveau de sévérité 2
+
+DESCRIPTION :
+Même racine clinique que 05M091 (insuffisance cardiaque / état de choc circulatoire), mais avec au moins une comorbidité associée significative (CMA) de niveau modéré, ce qui justifie un classement en niveau 2 — généralement associé à une durée de séjour et un coût de prise en charge plus élevés que le niveau 1.
+
+CONTEXTE PMSI :
+Le passage du niveau 1 au niveau 2 dépend de la présence de DAS appartenant à certaines listes définies par l'ATIH (ex : liste D-0505 pour cette racine). Un diagnostic associé comme le diabète (E11.9) ou l'hypertension (I10) peut, selon son statut (CMA ou non), influencer ce niveau.

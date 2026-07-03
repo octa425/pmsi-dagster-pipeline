@@ -1,0 +1,9 @@
+CODE CIM-10 : I50.0
+LIBELLE : Insuffisance cardiaque congestive
+CHAPITRE : IX - Maladies de l'appareil circulatoire
+
+DESCRIPTION :
+Forme d'insuffisance cardiaque caractérisée par une congestion (accumulation de liquide), notamment pulmonaire et périphérique (œdèmes des membres inférieurs), liée à l'incapacité du cœur à assurer un débit sanguin suffisant.
+
+USAGE PMSI :
+Diagnostic principal typique orientant vers la racine GHM 05M09 (Insuffisances cardiaques et états de choc circulatoire). Peut aussi apparaître en DAS si présent en comorbidité d'un autre motif d'hospitalisation.

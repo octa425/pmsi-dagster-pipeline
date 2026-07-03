@@ -1,0 +1,18 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Femme, 84 ans
+Motif d'entrée : Dyspnée aiguë, désaturation
+Diagnostic principal : Insuffisance cardiaque gauche (I50.1)
+Diagnostics associés : Maladie rénale chronique stade 3 (N18.3), Antécédent d'anticoagulants au long cours (Z92.1)
+
+RESUME CLINIQUE :
+Patiente connue pour une fibrillation auriculaire sous anticoagulants, admise pour décompensation cardiaque gauche avec œdème aigu pulmonaire. La fonction rénale, déjà altérée au stade 3, complique la gestion du traitement diurétique (risque de dégradation rénale supplémentaire). Surveillance rapprochée de la créatininémie pendant le traitement.
+
+EVOLUTION :
+Stabilisation respiratoire à J3, fonction rénale stable sous surveillance. Sortie à J9.
+
+GROUPAGE PMSI :
+GHM : 05M092 (Insuffisances cardiaques et états de choc circulatoire, niveau 2)
+Durée de séjour : 9 jours
+
+NOTE : Le passage au niveau de sévérité 2 (par rapport au niveau 1) s'explique par la présence de la comorbidité rénale (N18.3), classée en diagnostic associé significatif (DAS).

@@ -1,0 +1,9 @@
+CODE CIM-10 : J44.9
+LIBELLE : BPCO, sans précision
+CHAPITRE : X - Maladies de l'appareil respiratoire
+
+DESCRIPTION :
+Bronchopneumopathie chronique obstructive codée sans précision supplémentaire sur une exacerbation ou une infection associée — utilisé par exemple pour un suivi ou une hospitalisation où la BPCO est mentionnée sans caractérisation plus fine.
+
+USAGE PMSI :
+Peut apparaître en diagnostic principal (séjour centré sur la BPCO elle-même) ou en diagnostic associé (comorbidité respiratoire chronique chez un patient hospitalisé pour autre chose).

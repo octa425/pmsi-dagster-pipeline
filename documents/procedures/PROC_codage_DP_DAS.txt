@@ -1,0 +1,13 @@
+PROCEDURE PMSI : Règles de codage du diagnostic principal et des diagnostics associés
+
+DIAGNOSTIC PRINCIPAL (DP) :
+Le DP est le diagnostic qui a motivé l'admission du patient dans l'unité médicale, déterminé à la fin du séjour (et non à l'entrée). C'est le critère central utilisé par l'algorithme de groupage pour orienter le séjour vers une Catégorie Majeure de Diagnostic (CMD) puis un GHM.
+
+DIAGNOSTIC RELIE (DR) :
+Utilisé dans certains cas particuliers pour préciser le contexte du DP quand celui-ci est un code peu informatif seul (ex : un code de la catégorie Z).
+
+DIAGNOSTICS ASSOCIES SIGNIFICATIFS (DAS) :
+Ce sont les comorbidités ou complications présentes pendant le séjour qui ont nécessité une prise en charge (surveillance, traitement) et qui ont un impact sur la charge en soins. Les DAS peuvent faire monter le niveau de sévérité du GHM si le code appartient à une liste de comorbidités associées (CMA) définie par l'ATIH.
+
+IMPORTANCE POUR LE GROUPAGE :
+Un même DP peut aboutir à des GHM de sévérité différente selon les DAS présents - c'est ce qui explique qu'un même diagnostic principal (par exemple une insuffisance cardiaque) puisse être valorisé très différemment selon le profil du patient.

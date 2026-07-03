@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Femme, 72 ans
+Motif d'entrée : Toux productive, fièvre, dyspnée
+Diagnostic principal : Pneumonie, sans précision (J18.9)
+Diagnostics associés : Diabète de type 2 (E11.9)
+
+RESUME CLINIQUE :
+Patiente admise pour syndrome infectieux respiratoire avec foyer de condensation pulmonaire confirmé à l'imagerie. Antibiothérapie probabiliste débutée aux urgences, adaptée secondairement. Le diabète associé impose une surveillance glycémique renforcée pendant l'antibiothérapie et la corticothérapie éventuelle.
+
+EVOLUTION :
+Amélioration clinique et biologique progressive. Sortie à J6.
+
+GROUPAGE PMSI :
+GHM : rattaché à une racine de la CMD 04 (Affections de l'appareil respiratoire)
+Durée de séjour : 6 jours

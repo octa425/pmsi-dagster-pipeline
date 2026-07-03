@@ -1,0 +1,12 @@
+PROCEDURE PMSI : Niveaux de sévérité des GHM
+
+PRINCIPE :
+La plupart des racines de GHM médicales se déclinent en 4 niveaux de sévérité (1 à 4), du moins sévère (1) au plus sévère (4). Certaines racines ont aussi un GHM de "très courte durée" (suffixe T) pour les séjours de 0 à 2 jours, qui ne suit pas la logique de sévérité classique.
+
+FACTEURS INFLUENCANT LE NIVEAU :
+- Présence de diagnostics associés significatifs (DAS) appartenant à une liste de comorbidités associées (CMA)
+- Âge du patient (un âge élevé peut faire monter le niveau, selon les racines)
+- Certains actes réalisés pendant le séjour
+
+IMPACT TARIFAIRE :
+Le niveau de sévérité influence directement le GHS (Groupe Homogène de Séjour) associé, donc le tarif de remboursement du séjour. Un niveau 3 est généralement mieux valorisé qu'un niveau 1 pour la même racine, car il reflète une charge en soins plus importante.

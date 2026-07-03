@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 78 ans
+Motif d'entrée : Dyspnée aiguë, œdèmes des membres inférieurs
+Diagnostic principal : Insuffisance cardiaque congestive (I50.0)
+Diagnostics associés : Diabète de type 2 sans complication (E11.9), Hypertension artérielle essentielle (I10)
+
+RESUME CLINIQUE :
+Patient admis aux urgences pour dyspnée d'aggravation progressive sur 5 jours, associée à des œdèmes bilatéraux des membres inférieurs. Antécédents de diabète de type 2 traité et d'hypertension artérielle. L'examen clinique et le bilan biologique (NT-proBNP élevé) confirment une décompensation cardiaque congestive. Mise sous diurétiques IV avec surveillance du poids et du bilan hydrique.
+
+EVOLUTION :
+Amélioration progressive sous traitement diurétique. Sortie à J7 avec ajustement du traitement de fond.
+
+GROUPAGE PMSI :
+GHM : 05M091 (Insuffisances cardiaques et états de choc circulatoire, niveau 1)
+Durée de séjour : 7 jours

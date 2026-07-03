@@ -1,0 +1,16 @@
+COMPTE-RENDU D'HOSPITALISATION (fictif - usage démonstration)
+
+Patient : Homme, 67 ans
+Motif d'entrée : Douleur thoracique aiguë
+Diagnostic principal : Infarctus aigu du myocarde
+Diagnostics associés : Aucun DAS significatif identifié
+
+RESUME CLINIQUE :
+Patient admis pour douleur thoracique constrictive typique. ECG et troponine confirment un infarctus aigu du myocarde. Prise en charge médicale standard sans complication ni comorbidité lourde associée.
+
+EVOLUTION :
+Evolution favorable sans complication. Sortie à J4.
+
+GROUPAGE PMSI :
+GHM : 05M041 (Infarctus aigu du myocarde, niveau 1)
+Durée de séjour : 4 jours

@@ -1,0 +1,9 @@
+CODE CIM-10 : Z92.1
+LIBELLE : Antécédent personnel d'utilisation prolongée (courante) d'anticoagulants
+CHAPITRE : XXI - Facteurs influant sur l'état de santé et motifs de recours aux services de santé
+
+DESCRIPTION :
+Code indiquant que le patient est ou a été sous traitement anticoagulant au long cours (par exemple pour une fibrillation auriculaire ou une prévention thromboembolique) — information importante pour la prise en charge (risque hémorragique, interactions).
+
+USAGE PMSI :
+Diagnostic associé fréquent chez les patients cardiaques, notamment ceux présentant une insuffisance cardiaque avec trouble du rythme associé.

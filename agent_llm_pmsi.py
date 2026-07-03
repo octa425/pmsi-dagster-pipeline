@@ -50,6 +50,19 @@ Tables disponibles dans PostgreSQL (base: hopital) :
    - readmis_30j (integer: 0 ou 1)
 
 Toutes les donnees concernent l'Insuffisance Cardiaque (codes I50*).
+
+IMPORTANT - Format exact des codes CIM-10 dans la colonne dp :
+Les valeurs sont stockees SANS point et SANS tiret, sur 4 caracteres exacts.
+Exemples de valeurs reelles presentes dans la table : I500, I501, I509, E119, J440.
+
+Pour chercher TOUS les sejours d'une famille de diagnostics (ex : tous les I50.x),
+utilise TOUJOURS un prefixe avec LIKE, jamais une egalite stricte :
+  Correct   : WHERE dp LIKE 'I50%'
+  Incorrect : WHERE dp = 'I50-'  (ne matchera jamais rien, ce format n'existe pas)
+  Incorrect : WHERE dp = 'I50.x' (le point n'existe pas dans les donnees)
+
+Pour chercher un code precis (ex : uniquement I50.9), utilise l'egalite stricte
+avec le code complet exact : WHERE dp = 'I509'
 """
 
 # ──────────────────────────────────────────────
@@ -65,6 +78,9 @@ REGLES ABSOLUES :
 - Tu n'utilises JAMAIS DELETE, DROP, UPDATE, INSERT, ALTER
 - Tu reponds UNIQUEMENT avec la requete SQL, sans explication
 - Pas de markdown, pas de backticks, juste le SQL pur
+- Le FROM doit TOUJOURS utiliser le nom complet schema.table, jamais le schema seul.
+  Exemple correct   : FROM pmsi_mco_analytics.ic_couts_sejours
+  Exemple incorrect : FROM pmsi_mco_analytics
 
 Question : {question}
 
@@ -72,7 +88,11 @@ SQL :"""
 
     response = ollama.chat(
         model="llama3.2",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        options={"temperature": 0.1}
+        # Temperature basse (proche de 0) : reduit la variabilite du SQL genere.
+        # On privilegie ici la reproductibilite a la creativite, ce qui est
+        # le bon compromis pour une tache de generation de code structure.
     )
     return response["message"]["content"].strip()
 
@@ -103,8 +123,14 @@ Requete executee : {sql}
 Colonnes : {colonnes}
 Resultats : {resultats}
 
-Reponds en francais de facon claire et concise en donnant les chiffres exacts.
-Ne mentionne pas la requete SQL dans ta reponse."""
+REGLES STRICTES :
+- Reponds en francais, de facon claire et concise, en donnant les chiffres exacts.
+- Ne mentionne PAS la requete SQL dans ta reponse.
+- N'ajoute AUCUNE explication medicale, definition ou connaissance generale
+  qui ne provient pas directement des resultats fournis ci-dessus.
+- Limite-toi strictement a reformuler le resultat chiffre en une phrase.
+- Si la question demande une definition ou un "pourquoi", indique que cette
+  information n'est pas disponible via cette source de donnees chiffrees."""
 
     response = ollama.chat(
         model="llama3.2",
@@ -130,9 +156,11 @@ def agent_pmsi(question):
         colonnes, resultats = executer_sql(sql)
         reponse = reformuler_reponse(question, sql, colonnes, resultats)
         print(f"Reponse : {reponse}")
+        return reponse
 
     except Exception as e:
         print(f"Erreur : {e}")
+        return f"Erreur lors de l'execution SQL : {e}"
 
 # ──────────────────────────────────────────────
 # Test avec plusieurs questions

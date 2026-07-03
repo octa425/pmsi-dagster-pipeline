@@ -1,0 +1,9 @@
+CODE CIM-10 : J18.9
+LIBELLE : Pneumonie, sans précision
+CHAPITRE : X - Maladies de l'appareil respiratoire
+
+DESCRIPTION :
+Infection pulmonaire aiguë (pneumonie) dont l'agent causal (bactérien, viral...) n'est pas identifié ou précisé dans le codage.
+
+USAGE PMSI :
+Diagnostic principal fréquent chez les patients âgés ou fragiles, orientant typiquement vers une racine de GHM de la CMD 04 (Affections de l'appareil respiratoire).

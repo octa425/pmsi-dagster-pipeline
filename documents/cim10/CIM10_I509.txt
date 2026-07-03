@@ -1,0 +1,9 @@
+CODE CIM-10 : I50.9
+LIBELLE : Insuffisance cardiaque, sans précision
+CHAPITRE : IX - Maladies de l'appareil circulatoire
+
+DESCRIPTION :
+Insuffisance cardiaque dont le type précis (gauche, droite, congestive...) n'est pas spécifié dans le codage. Code utilisé quand l'information clinique disponible ne permet pas ou ne nécessite pas une précision plus fine.
+
+USAGE PMSI :
+Diagnostic principal orientant vers la racine GHM 05M09, au même titre que I50.0 et I50.1.

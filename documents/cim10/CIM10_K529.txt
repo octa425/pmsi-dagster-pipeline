@@ -1,0 +1,9 @@
+CODE CIM-10 : K52.9
+LIBELLE : Gastro-entérite et colite non infectieuses, sans précision
+CHAPITRE : XI - Maladies de l'appareil digestif
+
+DESCRIPTION :
+Inflammation aiguë du tube digestif (estomac et intestin) d'origine non infectieuse (à distinguer des gastro-entérites infectieuses, codées ailleurs), sans cause précise identifiée dans le codage.
+
+USAGE PMSI :
+Diagnostic principal pouvant orienter vers une racine de GHM digestive selon la CMD 06.
