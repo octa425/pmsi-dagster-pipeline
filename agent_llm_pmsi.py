@@ -1,14 +1,19 @@
+import os
 import ollama
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ──────────────────────────────────────────────
-# Configuration PostgreSQL
+# Configuration PostgreSQL (variables d'environnement, voir .env)
 # ──────────────────────────────────────────────
 DB_CONFIG = {
-    "host": "localhost",
-    "database": "hopital",
-    "user": "postgres",
-    "password": "MOT_DE_PASSE_SUPPRIME"
+
+    "host": os.environ["DB_HOST"],
+    "database": os.environ["DB_NAME"],
+    "user": os.environ["DB_USER"],
+    "password": os.environ["DB_PASSWORD"]
 }
 
 # ──────────────────────────────────────────────

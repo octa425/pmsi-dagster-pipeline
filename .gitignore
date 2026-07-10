@@ -12,3 +12,5 @@ __pycache__/
 *.pyc
 .env
 *.pkl
+logs/
+rag_env/

@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 """
 Retriever : recherche les documents les plus pertinents dans rag_documents
 par rapport a une question posee en langage naturel.
@@ -14,13 +17,12 @@ def rechercher_documents(question, top_k=3):
     vecteur_question = reponse["embeddings"][0]
 
     conn = psycopg2.connect(
-        host="127.0.0.1",
-        port=5432,
-        dbname="hopital",
-        user="postgres",
-        password="MOT_DE_PASSE_SUPPRIME",
-        options="-c search_path=pmsi_mco_analytics"
-    )
+
+        host=os.environ["DB_HOST"],
+        port=int(os.environ.get("DB_PORT", 5432)),
+        dbname=os.environ["DB_NAME"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASSWORD"]
     cur = conn.cursor()
 
     # L'operateur <=> de pgvector calcule la distance cosinus entre deux vecteurs.
