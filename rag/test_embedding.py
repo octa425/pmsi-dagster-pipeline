@@ -1,3 +1,4 @@
+import os
 """
 Script de test : vérifie qu'on peut bien générer un embedding
 via Ollama et l'insérer dans PostgreSQL/pgvector, avant de lancer
@@ -25,13 +26,14 @@ print(f"Embedding généré, dimension : {len(vecteur)}")
 
 # --- 3. Se connecter à PostgreSQL et insérer ---
 conn = psycopg2.connect(
-    host="127.0.0.1",
+    host=os.getenv("DB_HOST"),
     port=5432,
-    dbname="hopital",
-    user="postgres",
-    password="MOT_DE_PASSE_SUPPRIME",
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
     options="-c search_path=pmsi_mco_analytics"
 )
+
 cur = conn.cursor()
 
 cur.execute(

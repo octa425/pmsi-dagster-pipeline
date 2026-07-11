@@ -35,13 +35,13 @@ def main():
     print(f"{len(fichiers)} documents trouves a ingerer.\n")
 
     conn = psycopg2.connect(
-        host="127.0.0.1",
-        port=5432,
-        dbname="hopital",
-        user="postgres",
-        password="MOT_DE_PASSE_SUPPRIME",
-        options="-c search_path=pmsi_mco_analytics"
-    )
+    host=os.getenv("DB_HOST"),
+    port=5432,
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    options="-c search_path=pmsi_mco_analytics"
+)
     cur = conn.cursor()
 
     cur.execute("TRUNCATE TABLE rag_documents RESTART IDENTITY;")

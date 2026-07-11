@@ -1,3 +1,4 @@
+import os
 import psycopg2
 import polars as pl
 import csv
@@ -129,8 +130,11 @@ def charger_postgres_patients(clean_patients):
         return False
 
     conn = psycopg2.connect(
-        "postgresql://postgres:MOT_DE_PASSE_SUPPRIME@localhost:5432/hopital"
-    )
+    host=os.getenv("DB_HOST"),
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD")
+)
     cursor = conn.cursor()
 
     cursor.execute("CREATE SCHEMA IF NOT EXISTS pmsi_mco_analytics;")
