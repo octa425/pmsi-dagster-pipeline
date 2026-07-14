@@ -2,6 +2,8 @@ import os
 import ollama
 import psycopg2
 from dotenv import load_dotenv
+from monitoring import enregistrer_trace
+import time
 
 load_dotenv()
 
@@ -146,26 +148,31 @@ REGLES STRICTES :
 # ──────────────────────────────────────────────
 # Agent principal
 # ──────────────────────────────────────────────
+
 def agent_pmsi(question):
-    print(f"\nQuestion : {question}")
-    print("-" * 50)
-
-    sql = generer_sql(question)
-
-    valide, message = verifier_requete(sql)
-    if not valide:
-        print(f"⛔ SECURITE : {message}")
-        return
+    debut = time.time()
+    erreur = False
+    message_erreur = None
+    reponse = None
 
     try:
+        sql = generer_sql(question)
+        valide, message = verifier_requete(sql)
+        if not valide:
+            raise Exception(message)
         colonnes, resultats = executer_sql(sql)
         reponse = reformuler_reponse(question, sql, colonnes, resultats)
-        print(f"Reponse : {reponse}")
-        return reponse
-
+        print(f"Réponse : {reponse}")
     except Exception as e:
+        erreur = True
+        message_erreur = str(e)
         print(f"Erreur : {e}")
-        return f"Erreur lors de l'execution SQL : {e}"
+
+    fin = time.time()
+    duree = fin - debut
+    enregistrer_trace(question, reponse, duree, "SQL", erreur, message_erreur)
+
+    return reponse
 
 # ──────────────────────────────────────────────
 # Test avec plusieurs questions
