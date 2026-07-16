@@ -6,6 +6,7 @@ Choix d'architecture : routeur a regles explicites (mots-cles), pas un
 classifieur ML. Plus simple, plus rapide, et surtout entierement explicable :
 chaque decision peut etre justifiee ligne par ligne.
 """
+import re
 
 MOTS_CLES_SQL = [
     "combien", "nombre", "cout", "coût", "moyenne", "taux",
@@ -19,15 +20,30 @@ MOTS_CLES_RAG = [
     "que veut dire", "a quoi correspond", "à quoi correspond",
 ]
 
+
+def contient_mot_cle(question_normalisee, mots_cles):
+    """
+    Verifie si un des mots-cles apparait comme MOT ENTIER dans la question
+    (pas comme simple sous-chaine). Utilise \b (word boundary) pour eviter
+    les faux positifs, ex : "explique" ne doit pas matcher dans "expliquent".
+    """
+    for mot in mots_cles:
+        motif = r"\b" + re.escape(mot) + r"\b"
+        if re.search(motif, question_normalisee):
+            return True
+    return False
+
+
 def detecter_intention(question):
     """
     Retourne 'sql', 'rag' ou 'hybride' selon les mots-cles presents
-    dans la question (recherche insensible a la casse).
+    dans la question (recherche insensible a la casse, sur des mots
+    entiers uniquement - voir contient_mot_cle).
     """
     question_normalisee = question.lower()
 
-    contient_sql = any(mot in question_normalisee for mot in MOTS_CLES_SQL)
-    contient_rag = any(mot in question_normalisee for mot in MOTS_CLES_RAG)
+    contient_sql = contient_mot_cle(question_normalisee, MOTS_CLES_SQL)
+    contient_rag = contient_mot_cle(question_normalisee, MOTS_CLES_RAG)
 
     if contient_sql and contient_rag:
         return "hybride"
@@ -36,10 +52,6 @@ def detecter_intention(question):
     elif contient_rag:
         return "rag"
     else:
-        # Par defaut, si aucun mot-cle ne matche clairement,
-        # on part sur le RAG : plus prudent qu'un SQL par defaut
-        # (un mauvais SQL peut renvoyer un resultat trompeur sans le signaler,
-        # alors que le RAG a son propre garde-fou de pertinence).
         return "rag"
 
 

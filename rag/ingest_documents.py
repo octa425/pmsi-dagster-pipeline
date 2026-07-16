@@ -4,6 +4,8 @@ lit tous les fichiers .txt du dossier documents/, genere leur embedding
 via Ollama (all-minilm), et les insere dans PostgreSQL/pgvector.
 """
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import ollama
 import psycopg2
 

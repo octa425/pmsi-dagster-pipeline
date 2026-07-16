@@ -89,6 +89,26 @@ REGLES ABSOLUES :
   Exemple correct   : FROM pmsi_mco_analytics.ic_couts_sejours
   Exemple incorrect : FROM pmsi_mco_analytics
 
+IMPORTANT - Regroupement (GROUP BY) :
+Des que tu selectionnes une colonne agregee (COUNT, AVG, SUM...) EN MEME TEMPS
+qu'une colonne normale (comme dp, ghm, urmp), tu dois OBLIGATOIREMENT ajouter
+un GROUP BY sur cette colonne normale, sinon la requete echoue.
+  Correct   : SELECT dp, COUNT(*) FROM ic_couts_sejours GROUP BY dp
+  Incorrect : SELECT dp, COUNT(*) FROM ic_couts_sejours
+Si tu veux juste un total sans repartition, ne selectionne PAS la colonne
+normale : SELECT COUNT(*) FROM ic_couts_sejours
+
+IMPORTANT - Perimetre des donnees disponibles :
+Les tables ci-dessus ne contiennent QUE des donnees sur l'insuffisance cardiaque
+en France (pas d'autres pays, pas d'autres pathologies que celles listees).
+Si la question porte sur un sujet que ce schema ne permet manifestement pas
+de traiter (autre pays, autre pathologie totalement absente du schema, sujet
+sans rapport avec des sejours hospitaliers), reponds UNIQUEMENT avec le mot :
+HORS_PERIMETRE
+Ne genere PAS de requete SQL approximative dans ce cas - il vaut mieux
+signaler l'incapacite a repondre que de produire une requete qui risque
+d'echouer ou de renvoyer un resultat trompeur.
+
 Question : {question}
 
 SQL :"""
@@ -157,6 +177,16 @@ def agent_pmsi(question):
 
     try:
         sql = generer_sql(question)
+
+        if "HORS_PERIMETRE" in sql.upper():
+            reponse = ("Cette question porte sur un sujet hors du perimetre des "
+                       "donnees disponibles (insuffisance cardiaque, France). "
+                       "Aucune requete n'a ete executee.")
+            print(reponse)
+            fin = time.time()
+            enregistrer_trace(question, reponse, fin - debut, "SQL", False, "hors_perimetre")
+            return reponse
+
         valide, message = verifier_requete(sql)
         if not valide:
             raise Exception(message)
@@ -166,6 +196,7 @@ def agent_pmsi(question):
     except Exception as e:
         erreur = True
         message_erreur = str(e)
+        reponse = f"Erreur lors de l'execution SQL : {e}"
         print(f"Erreur : {e}")
 
     fin = time.time()

@@ -22,7 +22,9 @@ def rechercher_documents(question, top_k=3):
         port=int(os.environ.get("DB_PORT", 5432)),
         dbname=os.environ["DB_NAME"],
         user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"]
+        password=os.environ["DB_PASSWORD"],
+        options="-c search_path=pmsi_mco_analytics"
+    )
     cur = conn.cursor()
 
     # L'operateur <=> de pgvector calcule la distance cosinus entre deux vecteurs.
