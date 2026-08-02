@@ -16,6 +16,43 @@ streamlit run app_streamlit.py
 # → Ouvrir http://localhost:8501
 
 ```
+## Architecture du projet
+
+```mermaid
+graph TD
+    A[📄 DATA_SET_SIMULE.csv] --> B[⚙️ Dagster Pipeline]
+    B --> C[(🗄️ PostgreSQL\nhopital)]
+    C --> D[🔧 DBT\n6 models + 13 tests]
+    C --> E[🤖 ML\nRandom Forest]
+    E --> F[🚀 FastAPI\n/predict]
+    C --> G[🖥️ Streamlit\nInterface Web]
+    G --> H[🔀 Router]
+    H -->|Question chiffrée| I[📊 Text-to-SQL]
+    H -->|Question documentaire| J[📚 RAG pgvector]
+    H -->|Hybride| K[🔄 SQL + RAG]
+    I --> C
+    J --> L[(📁 pgvector\nCorpus 34 docs)]
+    K --> C
+    K --> L
+    C --> M[🦙 llama3.2\nOllama local]
+    L --> M
+    M --> G
+
+    style A fill:#E8F4FD,stroke:#2E75B6
+    style B fill:#E8F4FD,stroke:#2E75B6
+    style C fill:#D5E8D4,stroke:#375623
+    style D fill:#FFF2CC,stroke:#BF8F00
+    style E fill:#FFF2CC,stroke:#BF8F00
+    style F fill:#FFF2CC,stroke:#BF8F00
+    style G fill:#FCE4D6,stroke:#C00000
+    style H fill:#FCE4D6,stroke:#C00000
+    style I fill:#FCE4D6,stroke:#C00000
+    style J fill:#FCE4D6,stroke:#C00000
+    style K fill:#FCE4D6,stroke:#C00000
+    style M fill:#D5E8D4,stroke:#375623
+```
+
+
 ![CI/CD](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
