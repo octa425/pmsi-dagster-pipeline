@@ -23,8 +23,8 @@ st.set_page_config(
 )
 
 # ── Titre principal ──
-st.title("🏥 Agent IA PMSI — Insuffisance Cardiaque")
-st.caption("Interrogez la base PostgreSQL en langage naturel — 100% local — RGPD")
+st.title("🏥 Agent IA PMSI Insuffisance Cardiaque")
+st.caption("Interrogez la base PostgreSQL en langage naturel:  100% local RGPD")
 
 # ── Séparateur ──
 st.divider()

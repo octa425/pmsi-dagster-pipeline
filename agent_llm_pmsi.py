@@ -109,6 +109,26 @@ Ne genere PAS de requete SQL approximative dans ce cas - il vaut mieux
 signaler l'incapacite a repondre que de produire une requete qui risque
 d'echouer ou de renvoyer un resultat trompeur.
 
+IMPORTANT - Concepts absents du schema (different de HORS_PERIMETRE) :
+Certaines questions restent dans le domaine general (patients, sejours,
+insuffisance cardiaque) mais portent sur un CONCEPT PRECIS qui n'a AUCUNE
+colonne correspondante dans le schema ci-dessus. Ne genere JAMAIS une
+requete qui approxime ou remplace ce concept par une colonne proche mais
+differente.
+Exemples de concepts ABSENTS du schema :
+  - "mortalite", "deces", "taux de deces" -> n'existe pas (readmis_30j est
+    la READMISSION, pas la mortalite, ne pas confondre)
+  - "erreur de codage", "sejour mal code" -> n'existe pas
+  - "soins critiques" comme categorie -> n'existe pas comme valeur de ghm/ghs
+Si la question porte sur un concept absent (ou clairement similaire non
+couvert), reponds UNIQUEMENT avec le mot :
+CONCEPT_ABSENT
+
+RAPPEL FINAL AVANT DE REPONDRE :
+- Le FROM doit imperativement utiliser le nom complet pmsi_mco_analytics.nom_table
+- Ne remplace jamais un concept absent (mortalite) par une colonne existante
+  qui mesure autre chose (readmis_30j = readmission, pas mortalite)
+
 Question : {question}
 
 SQL :"""
@@ -185,6 +205,16 @@ def agent_pmsi(question):
             print(reponse)
             fin = time.time()
             enregistrer_trace(question, reponse, fin - debut, "SQL", False, "hors_perimetre")
+            return reponse
+
+        if "CONCEPT_ABSENT" in sql.upper():
+            reponse = ("Cette question porte sur un concept qui n'existe pas dans "
+                       "les donnees disponibles (par exemple la mortalite, alors que "
+                       "seule la readmission a 30 jours est mesuree). Aucune requete "
+                       "n'a ete executee pour eviter une reponse trompeuse.")
+            print(reponse)
+            fin = time.time()
+            enregistrer_trace(question, reponse, fin - debut, "SQL", False, "concept_absent")
             return reponse
 
         valide, message = verifier_requete(sql)
