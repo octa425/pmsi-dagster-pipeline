@@ -1,5 +1,21 @@
 # pmsi-dagster-pipeline
+## Interface de démonstration
 
+![Interface Agent IA PMSI](images/interface_streamlit_agent_pmsi.png)
+
+> Interface Streamlit : Agent IA PMSI interrogeant PostgreSQL
+
+> en langage naturel :  100% local   RGPD compliant
+
+### Lancer l'interface
+
+```bash
+
+streamlit run app_streamlit.py
+
+# → Ouvrir http://localhost:8501
+
+```
 ![CI/CD](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
