@@ -14,3 +14,4 @@ __pycache__/
 *.pkl
 logs/
 rag_env/
+benchmark_results_*.json
