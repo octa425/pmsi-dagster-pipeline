@@ -315,3 +315,31 @@ dbt docs serve  # Documentation interactive
 | Coût moyen séjour | 5 649 € |
 | Taux réadmission J30 | 22.4% |
 | GHM le plus fréquent | 05M09 — Insuffisance cardiaque |
+
+## Benchmark Text-to-SQL
+
+L'agent a été évalué sur 21 questions PMSI
+de référence avec un script automatique (`eval.py`).
+
+| Type de question | Précision |
+|---|---|
+| COUNT | 100% |
+| MOYENNE | 100% |
+| SOMME | 100% |
+| MAX / MIN | 100% |
+| GROUPE | 100% |
+| DATE | 100% |
+| SÉCURITÉ SQL | 100% |
+| COMPLEXE | 100% |
+| FILTRE | 80% |
+| **GLOBAL** | **95.2%** |
+
+> Le seul échec concerne une ambiguïté sémantique :
+> "J30" peut signifier "30 jours" ou le code CIM-10 J30
+> (rhinite allergique). C'est une limite documentée des LLM.
+
+### Lancer le benchmark
+
+```bash
+python3 eval.py
+```
