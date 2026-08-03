@@ -50,6 +50,24 @@ Tables disponibles dans PostgreSQL (base: hopital) :
    - date_sortie (date) : date de sortie
    - tarif_base (numeric) : tarif ATIH en euros
    - cout_sejour (numeric) : cout total du sejour
+   
+   # Après la description des colonnes, ajouter :
+
+EXEMPLES DE REQUETES CORRECTES :
+-- Femmes (sexe = 2) :
+SELECT COUNT(*) FROM pmsi_mco_analytics.ic_couts_sejours WHERE sexe = 2;
+
+-- Hommes (sexe = 1) :
+SELECT COUNT(*) FROM pmsi_mco_analytics.ic_couts_sejours WHERE sexe = 1;
+
+-- Cout total :
+SELECT SUM(cout_sejour) FROM pmsi_mco_analytics.ic_couts_sejours;
+
+-- Age moyen :
+SELECT AVG(age) FROM pmsi_mco_analytics.ic_couts_sejours;
+
+-- Duree moyenne :
+SELECT AVG(duree_sejour) FROM pmsi_mco_analytics.ic_couts_sejours;
 
 2. pmsi_mco_analytics.dataset_ml
    - nip, nda, date_entree, dp, pathologie
@@ -130,6 +148,24 @@ RAPPEL FINAL AVANT DE REPONDRE :
   qui mesure autre chose (readmis_30j = readmission, pas mortalite)
 
 Question : {question}
+# Dans agent_llm_pmsi.py, ajouter dans SCHEMA_BD :
+
+EXEMPLES SUPPLEMENTAIRES :
+-- Sejours par unite medicale (urmp = Unite Medicale) :
+SELECT urmp, COUNT(*) FROM pmsi_mco_analytics.ic_couts_sejours GROUP BY urmp;
+
+-- Sejours en janvier 2024 (date est de type DATE, pas TEXT) :
+SELECT COUNT(*) FROM pmsi_mco_analytics.ic_couts_sejours
+WHERE EXTRACT(MONTH FROM date_entree) = 1
+AND EXTRACT(YEAR FROM date_entree) = 2024;
+
+-- Sejours de plus de 10 jours (duree_sejour est TEXT, cast obligatoire) :
+SELECT COUNT(*) FROM pmsi_mco_analytics.ic_couts_sejours
+WHERE CAST(duree_sejour AS INTEGER) > 10;
+
+-- Patients readmis a J30 (readmis_30j = 1 dans dataset_ml, J30 = 30 jours pas un code CIM) :
+SELECT COUNT(*) FROM pmsi_mco_analytics.dataset_ml
+WHERE readmis_30j = 1;
 
 SQL :"""
 
