@@ -8,7 +8,10 @@ import streamlit as st
 import sys
 import os
 import time
-
+import psycopg2        # ← Ajoute cette ligne si absente !
+import pandas as pd    # ← Et celle-ci aussi !
+from dotenv import load_dotenv
+load_dotenv()
 # Ajouter le dossier rag/ au path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "rag"))
 
@@ -47,7 +50,34 @@ with st.sidebar:
     - ❌ DROP bloqué
     - ❌ UPDATE bloqué
     """)
+# ── Monitoring ──
+    st.divider()
+    st.header("📈 Monitoring")
 
+    if st.button("Voir les dernières traces", use_container_width=True):
+        try:
+            conn_monitoring = psycopg2.connect(
+                host=os.environ["DB_HOST"],
+                database=os.environ["DB_NAME"],
+                user=os.environ["DB_USER"],
+                password=os.environ["DB_PASSWORD"]
+            )
+            df_monitoring = pd.read_sql("""
+                SELECT
+                    LEFT(prompt, 40)    AS question,
+                    ROUND(duree_secondes::numeric, 1) AS duree_s,
+                    erreur_sql          AS erreur,
+                    message_erreur      AS message
+                FROM pmsi_mco_analytics.monitoring_llm
+                ORDER BY horodatage DESC
+                LIMIT 10
+            """, conn_monitoring)
+            conn_monitoring.close()
+
+            st.dataframe(df_monitoring, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Erreur monitoring : {e}")
     st.divider()
     st.header("💡 Exemples de questions")
     exemples = [
@@ -60,10 +90,10 @@ with st.sidebar:
         "Combien de femmes dans la cohorte ?",
         "Quel est l'âge moyen des patients ?",
     ]
+    
     for exemple in exemples:
         if st.button(exemple, use_container_width=True):
             st.session_state["question_selectionnee"] = exemple
-
 # ── Initialiser l'historique ──
 if "historique" not in st.session_state:
     st.session_state["historique"] = []
@@ -189,5 +219,5 @@ st.divider()
 st.caption(
     "Agent IA PMSI — Octavien YAMESSE — "
     "github.com/octa425/pmsi-dagster-pipeline — "
-    "100% local — RGPD compliant"
+    "100% local : RGPD compliant"
 )
