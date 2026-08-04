@@ -1,21 +1,20 @@
 # ══════════════════════════════════════════════════════
 # INTERFACE STREAMLIT — Agent IA PMSI
-# Permet d'interroger PostgreSQL en langage naturel
-# via une interface web simple et démontrable
+# Avec authentification utilisateur + monitoring tracé
 # ══════════════════════════════════════════════════════
 
 import streamlit as st
 import sys
 import os
 import time
-import psycopg2        # ← Ajoute cette ligne si absente !
-import pandas as pd    # ← Et celle-ci aussi !
+import psycopg2
+import pandas as pd
 from dotenv import load_dotenv
+
 load_dotenv()
-# Ajouter le dossier rag/ au path
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "rag"))
 
-# Import de l'agent
 from agent_llm_pmsi import generer_sql, verifier_requete, executer_sql, reformuler_reponse
 
 # ── Configuration de la page ──
@@ -25,20 +24,81 @@ st.set_page_config(
     layout="wide"
 )
 
-# ── Titre principal ──
-st.title("🏥 Agent IA PMSI Insuffisance Cardiaque")
-st.caption("Interrogez la base PostgreSQL en langage naturel:  100% local RGPD")
+# ══════════════════════════════════════════════════════
+# ÉTAPE 1 — AUTHENTIFICATION
+# ══════════════════════════════════════════════════════
+if "utilisateur" not in st.session_state:
+    st.session_state["utilisateur"] = None
 
-# ── Séparateur ──
+if st.session_state["utilisateur"] is None:
+
+    st.title("🏥 Agent IA PMSI : Connexion")
+    st.caption("Veuillez vous identifier avant de continuer")
+    st.divider()
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.subheader("Identification")
+        nom    = st.text_input("Votre nom :")
+        prenom = st.text_input("Votre prénom :")
+        service = st.selectbox(
+            "Votre service :",
+            [
+                "DIM: Département d'Information Médicale",
+                "Cardiologie",
+                "Urgences",
+                "Direction",
+                "Recherche",
+                "Informatique",
+                "Autre"
+            ]
+        )
+
+        if st.button("Se connecter 🔐", use_container_width=True):
+            if nom.strip() and prenom.strip():
+                st.session_state["utilisateur"] = {
+                    "nom"    : nom.strip(),
+                    "prenom" : prenom.strip(),
+                    "service": service
+                }
+                st.rerun()
+            else:
+                st.error("Veuillez entrer votre nom et prénom !")
+
+    st.stop()
+
+# ══════════════════════════════════════════════════════
+# ÉTAPE 2 — INTERFACE PRINCIPALE (après connexion)
+# ══════════════════════════════════════════════════════
+
+# Récupérer l'utilisateur connecté
+utilisateur   = st.session_state["utilisateur"]
+nom_complet   = f"{utilisateur['prenom']} {utilisateur['nom']}"
+service       = utilisateur["service"]
+
+# ── Titre principal ──
+st.title("🏥 Agent IA PMSI — Insuffisance Cardiaque")
+st.caption(f"Connecté : {nom_complet} — {service} | 100% local — RGPD")
+
+# Bouton déconnexion
+if st.button("Se déconnecter 🚪", key="deconnexion"):
+    st.session_state["utilisateur"] = None
+    st.session_state["historique"]  = []
+    st.rerun()
+
 st.divider()
 
-# ── Sidebar — Informations ──
+# ── Sidebar ──
 with st.sidebar:
     st.header("ℹ️ Informations")
-    st.markdown("""
-    **Base de données :** PostgreSQL `hopital`
+    st.markdown(f"""
+    **Utilisateur :** {nom_complet}
     
-    **Modèle LLM :** llama3.2 (local)
+    **Service :** {service}
+    
+    **Base :** PostgreSQL `hopital`
+    
+    **Modèle :** llama3.2 (local)
     
     **Tables disponibles :**
     - `ic_couts_sejours` — 2 312 séjours IC
@@ -50,7 +110,24 @@ with st.sidebar:
     - ❌ DROP bloqué
     - ❌ UPDATE bloqué
     """)
-# ── Monitoring ──
+
+    st.divider()
+    st.header("💡 Exemples de questions")
+    exemples = [
+        "Quel est le coût moyen d'un séjour ?",
+        "Combien de séjours au total ?",
+        "Quel est le GHM le plus fréquent ?",
+        "Quel GHM a le cout moyen le plus élevé ?",
+        "Combien de séjours en janvier 2024 ?",
+        "Quel est le tarif total ATIH ?",
+        "Combien de séjours par unité médicale ?",
+        "Combien de patients réadmis à J30 ?",
+    ]
+    for exemple in exemples:
+        if st.button(exemple, use_container_width=True):
+            st.session_state["question_selectionnee"] = exemple
+
+    # ── Monitoring ──
     st.divider()
     st.header("📈 Monitoring")
 
@@ -64,37 +141,22 @@ with st.sidebar:
             )
             df_monitoring = pd.read_sql("""
                 SELECT
-                    LEFT(prompt, 40)    AS question,
-                    ROUND(duree_secondes::numeric, 1) AS duree_s,
-                    erreur_sql          AS erreur,
-                    message_erreur      AS message
+                    utilisateur                        AS utilisateur,
+                    LEFT(prompt, 35)                   AS question,
+                    ROUND(duree_secondes::numeric, 1)  AS duree_s,
+                    erreur_sql                         AS erreur,
+                    message_erreur                     AS message
                 FROM pmsi_mco_analytics.monitoring_llm
                 ORDER BY horodatage DESC
                 LIMIT 10
             """, conn_monitoring)
             conn_monitoring.close()
-
             st.dataframe(df_monitoring, use_container_width=True)
 
         except Exception as e:
             st.error(f"Erreur monitoring : {e}")
-    st.divider()
-    st.header("💡 Exemples de questions")
-    exemples = [
-        "Quel est le coût moyen d'un séjour ?",
-        "Combien de séjours au total ?",
-        "Quel est le GHM le plus fréquent ?",
-        "Combien de patients ont été réadmis à J30 ?",
-        "Quelle est la durée moyenne de séjour ?",
-        "Quel est le coût total de tous les séjours ?",
-        "Combien de femmes dans la cohorte ?",
-        "Quel est l'âge moyen des patients ?",
-    ]
-    
-    for exemple in exemples:
-        if st.button(exemple, use_container_width=True):
-            st.session_state["question_selectionnee"] = exemple
-# ── Initialiser l'historique ──
+
+# ── Initialiser session ──
 if "historique" not in st.session_state:
     st.session_state["historique"] = []
 
@@ -103,7 +165,6 @@ if "question_selectionnee" not in st.session_state:
 
 # ── Zone de saisie ──
 col1, col2 = st.columns([4, 1])
-
 with col1:
     question = st.text_input(
         "Votre question :",
@@ -111,105 +172,108 @@ with col1:
         placeholder="Ex: Quel est le coût moyen d'un séjour ?",
         key="input_question"
     )
-
 with col2:
     st.write("")
     st.write("")
     envoyer = st.button("Envoyer 🚀", use_container_width=True)
 
-# ── Traitement de la question ──
+# ── Traitement ──
 if envoyer and question.strip():
-
-    # Reset question selectionnee
     st.session_state["question_selectionnee"] = ""
 
     with st.spinner("L'agent réfléchit..."):
+        debut = time.time()
 
         # Etape 1 — Génération SQL
-        debut = time.time()
         sql = generer_sql(question)
-        duree_llm_sql = round(time.time() - debut, 2)
 
         # Etape 2 — Vérification sécurité
         valide, message_securite = verifier_requete(sql)
 
         if not valide:
-            # Alerte sécurité
             st.error(f"⛔ SÉCURITÉ : {message_securite}")
             st.code(sql, language="sql")
 
+        elif "HORS_PERIMETRE" in sql.upper():
+            st.warning("⚠️ Cette question est hors du périmètre des données disponibles.")
+
+        elif "CONCEPT_ABSENT" in sql.upper():
+            st.warning("⚠️ Ce concept n'existe pas dans les données disponibles.")
+
         else:
-            # Etape 3 — Exécution PostgreSQL
             try:
+                # Etape 3 — Exécution PostgreSQL
                 debut_pg = time.time()
                 colonnes, resultats = executer_sql(sql)
                 duree_pg = round(time.time() - debut_pg, 2)
 
                 # Etape 4 — Reformulation
-                debut_reformul = time.time()
-                reponse = reformuler_reponse(
+                debut_ref = time.time()
+                reponse   = reformuler_reponse(
                     question, sql, colonnes, resultats
                 )
-                duree_reformul = round(time.time() - debut_reformul, 2)
+                duree_ref = round(time.time() - debut_ref, 2)
+                duree_sql = round(debut_pg - debut, 2)
 
-                # ── Affichage de la réponse ──
+                # Affichage réponse
                 st.success(f"💬 {reponse}")
 
-                # ── Transparence — SQL généré ──
+                # SQL généré
                 with st.expander("🔍 Voir la requête SQL générée"):
                     st.code(sql, language="sql")
-                    st.caption(f"Génération SQL : {duree_llm_sql}s | "
-                               f"PostgreSQL : {duree_pg}s | "
-                               f"Reformulation : {duree_reformul}s")
+                    st.caption(
+                        f"Génération SQL : {duree_sql}s | "
+                        f"PostgreSQL : {duree_pg}s | "
+                        f"Reformulation : {duree_ref}s"
+                    )
 
-                # ── Résultats bruts ──
+                # Résultats bruts
                 with st.expander("📊 Voir les résultats bruts"):
                     if resultats:
-                        import pandas as pd
                         df = pd.DataFrame(resultats, columns=colonnes)
                         st.dataframe(df, use_container_width=True)
                     else:
                         st.info("Aucun résultat retourné.")
 
-                # ── Métriques ──
+                # Métriques
                 col_m1, col_m2, col_m3 = st.columns(3)
                 with col_m1:
-                    st.metric("Génération SQL", f"{duree_llm_sql}s")
+                    st.metric("Génération SQL", f"{duree_sql}s")
                 with col_m2:
-                    st.metric("Exécution PostgreSQL", f"{duree_pg}s")
+                    st.metric("PostgreSQL", f"{duree_pg}s")
                 with col_m3:
-                    st.metric("Reformulation", f"{duree_reformul}s")
+                    st.metric("Reformulation", f"{duree_ref}s")
 
-                # ── Ajouter à l'historique ──
+                # Ajouter à l'historique
                 st.session_state["historique"].append({
-                    "question" : question,
-                    "sql"      : sql,
-                    "reponse"  : reponse,
-                    "duree"    : duree_llm_sql + duree_pg + duree_reformul
+                    "question"    : question,
+                    "sql"         : sql,
+                    "reponse"     : reponse,
+                    "utilisateur" : nom_complet,
+                    "duree"       : duree_sql + duree_pg + duree_ref
                 })
 
             except Exception as e:
                 st.error(f"❌ Erreur SQL : {e}")
                 st.info("Essayez de reformuler votre question.")
 
-# ── Historique des questions ──
+# ── Historique ──
 if st.session_state["historique"]:
     st.divider()
     st.subheader("📜 Historique de la session")
 
-    for i, item in enumerate(reversed(
-        st.session_state["historique"]
-    )):
+    for i, item in enumerate(reversed(st.session_state["historique"])):
         with st.expander(
-            f"Q{len(st.session_state['historique'])-i} — "
-            f"{item['question'][:60]}..."
+            f"Q{len(st.session_state['historique'])-i} "
+            f"— {item['utilisateur']} "
+            f"— {item['question'][:50]}..."
         ):
+            st.markdown(f"**Utilisateur :** {item['utilisateur']}")
             st.markdown(f"**Question :** {item['question']}")
             st.markdown(f"**Réponse :** {item['reponse']}")
-            st.code(item['sql'], language="sql")
+            st.code(item["sql"], language="sql")
             st.caption(f"Durée totale : {round(item['duree'], 2)}s")
 
-    # Bouton effacer historique
     if st.button("🗑️ Effacer l'historique"):
         st.session_state["historique"] = []
         st.rerun()
@@ -217,7 +281,7 @@ if st.session_state["historique"]:
 # ── Footer ──
 st.divider()
 st.caption(
-    "Agent IA PMSI — Octavien YAMESSE — "
+    f"Agent IA PMSI {nom_complet} ({service}) — "
     "github.com/octa425/pmsi-dagster-pipeline — "
-    "100% local : RGPD compliant"
+    "100% local — RGPD compliant"
 )
