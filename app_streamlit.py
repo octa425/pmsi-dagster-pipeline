@@ -29,6 +29,71 @@ st.set_page_config(
 # ══════════════════════════════════════════════════════
 if "utilisateur" not in st.session_state:
     st.session_state["utilisateur"] = None
+if st.session_state["utilisateur"] is None:
+
+    st.title("🏥 Agent IA PMSI Connexion")
+    st.caption("Veuillez vous identifier avant de continuer")
+    st.divider()
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.subheader("Identification")
+        nom    = st.text_input("Votre nom :")
+        prenom = st.text_input("Votre prénom :")
+        service = st.selectbox(
+            "Votre service :",
+            [
+                "DIM :Département d'Information Médicale",
+                "Cardiologie",
+                "Urgences",
+                "Direction",
+                "Recherche",
+                "Informatique",
+                "Autre"
+            ]
+        )
+
+        if st.button("Se connecter 🔐", use_container_width=True):
+            if nom.strip() and prenom.strip():
+                try:
+                    conn_auth = psycopg2.connect(
+                        host=os.environ["DB_HOST"],
+                        database=os.environ["DB_NAME"],
+                        user=os.environ["DB_USER"],
+                        password=os.environ["DB_PASSWORD"]
+                    )
+                    cursor = conn_auth.cursor()
+                    cursor.execute("""
+                        SELECT id, nom, prenom, service
+                        FROM pmsi_mco_analytics.users
+                        WHERE UPPER(nom)    = UPPER(%s)
+                        AND   UPPER(prenom) = UPPER(%s)
+                        AND   actif = TRUE
+                    """, (nom.strip(), prenom.strip()))
+
+                    user = cursor.fetchone()
+                    cursor.close()
+                    conn_auth.close()
+
+                    if user:
+                        st.session_state["utilisateur"] = {
+                            "nom"    : user[1],
+                            "prenom" : user[2],
+                            "service": user[3]
+                        }
+                        st.rerun()
+                    else:
+                        st.error(
+                            "Utilisateur non autorisé. "
+                            "Contactez l'administrateur."
+                        )
+
+                except Exception as e:
+                    st.error(f"Erreur de connexion : {e}")
+            else:
+                st.error("Veuillez entrer votre nom et prénom !")
+
+    st.stop()   # ← ICI — en dehors du with col2 !
 
 if st.session_state["utilisateur"] is None:
 
@@ -56,17 +121,45 @@ if st.session_state["utilisateur"] is None:
 
         if st.button("Se connecter 🔐", use_container_width=True):
             if nom.strip() and prenom.strip():
-                st.session_state["utilisateur"] = {
-                    "nom"    : nom.strip(),
-                    "prenom" : prenom.strip(),
-                    "service": service
-                }
-                st.rerun()
+                try:
+                    conn_auth = psycopg2.connect(
+                        host=os.environ["DB_HOST"],
+                        database=os.environ["DB_NAME"],
+                        user=os.environ["DB_USER"],
+                        password=os.environ["DB_PASSWORD"]
+                    )
+                    cursor = conn_auth.cursor()
+                    cursor.execute("""
+                        SELECT id, nom, prenom, service
+                        FROM pmsi_mco_analytics.users
+                        WHERE UPPER(nom)    = UPPER(%s)
+                        AND   UPPER(prenom) = UPPER(%s)
+                        AND   actif = TRUE
+                    """, (nom.strip(), prenom.strip()))
+
+                    user = cursor.fetchone()
+                    cursor.close()
+                    conn_auth.close()
+
+                    if user:
+                        st.session_state["utilisateur"] = {
+                            "nom"    : user[1],
+                            "prenom" : user[2],
+                            "service": user[3]
+                        }
+                        st.rerun()
+                    else:
+                        st.error(
+                            "Utilisateur non autorisé. "
+                            "Contactez l'administrateur."
+                        )
+
+                except Exception as e:
+                    st.error(f"Erreur de connexion : {e}")
             else:
                 st.error("Veuillez entrer votre nom et prénom !")
 
-    st.stop()
-
+    st.stop()   # ← ICI — en dehors du with col2 !
 # ══════════════════════════════════════════════════════
 # ÉTAPE 2 — INTERFACE PRINCIPALE (après connexion)
 # ══════════════════════════════════════════════════════
@@ -77,8 +170,8 @@ nom_complet   = f"{utilisateur['prenom']} {utilisateur['nom']}"
 service       = utilisateur["service"]
 
 # ── Titre principal ──
-st.title("🏥 Agent IA PMSI — Insuffisance Cardiaque")
-st.caption(f"Connecté : {nom_complet} — {service} | 100% local — RGPD")
+st.title("🏥 Agent IA PMSI Insuffisance Cardiaque")
+st.caption(f"Connecté : {nom_complet}  {service} | 100% local RGPD")
 
 # Bouton déconnexion
 if st.button("Se déconnecter 🚪", key="deconnexion"):
@@ -101,8 +194,8 @@ with st.sidebar:
     **Modèle :** llama3.2 (local)
     
     **Tables disponibles :**
-    - `ic_couts_sejours` — 2 312 séjours IC
-    - `dataset_ml` — Variables ML
+    - `ic_couts_sejours` : 2 312 séjours IC
+    - `dataset_ml` : Variables ML
     
     **Sécurité SQL :**
     - ✅ SELECT autorisé
@@ -111,23 +204,7 @@ with st.sidebar:
     - ❌ UPDATE bloqué
     """)
 
-    st.divider()
-    st.header("💡 Exemples de questions")
-    exemples = [
-        "Quel est le coût moyen d'un séjour ?",
-        "Combien de séjours au total ?",
-        "Quel est le GHM le plus fréquent ?",
-        "Quel GHM a le cout moyen le plus élevé ?",
-        "Combien de séjours en janvier 2024 ?",
-        "Quel est le tarif total ATIH ?",
-        "Combien de séjours par unité médicale ?",
-        "Combien de patients réadmis à J30 ?",
-    ]
-    for exemple in exemples:
-        if st.button(exemple, use_container_width=True):
-            st.session_state["question_selectionnee"] = exemple
-
-    # ── Monitoring ──
+  # ── Monitoring ──
     st.divider()
     st.header("📈 Monitoring")
 
@@ -152,9 +229,24 @@ with st.sidebar:
             """, conn_monitoring)
             conn_monitoring.close()
             st.dataframe(df_monitoring, use_container_width=True)
-
         except Exception as e:
             st.error(f"Erreur monitoring : {e}")
+
+    st.divider()
+    st.header("💡 Exemples de questions")
+    exemples = [
+        "Quel est le coût moyen d'un séjour ?",
+        "Combien de séjours au total ?",
+        "Quel est le GHM le plus fréquent ?",
+        "Quel GHM a le cout moyen le plus élevé ?",
+        "Combien de séjours en janvier 2024 ?",
+        "Quel est le tarif total ATIH ?",
+        "Combien de séjours par unité médicale ?",
+        "Combien de patients réadmis à J30 ?",
+    ]
+    for exemple in exemples:
+        if st.button(exemple, use_container_width=True):
+            st.session_state["question_selectionnee"] = exemple
 
 # ── Initialiser session ──
 if "historique" not in st.session_state:
@@ -283,5 +375,5 @@ st.divider()
 st.caption(
     f"Agent IA PMSI {nom_complet} ({service}) — "
     "github.com/octa425/pmsi-dagster-pipeline — "
-    "100% local — RGPD compliant"
+    "100% local - RGPD compliant"
 )
