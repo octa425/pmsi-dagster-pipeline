@@ -61,6 +61,8 @@ graph TD
 ![Docker](https://img.shields.io/badge/Docker-conteneurisation-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-hopital-blue)
 ![RGPD](https://img.shields.io/badge/Données-Simulées-orange)
+![Prometheus](https://img.shields.io/badge/Prometheus-monitoring-E6522C)
+![Grafana](https://img.shields.io/badge/Grafana-dashboards-F46800)
 
 Pipeline ETL/ELT de données hospitalières PMSI-MCO: Dagster, Polars, PostgreSQL, DBT | Analyse épidémio-économique : BPCO, Insuffisance Cardiaque, Tarifs ATIH 2026
 
@@ -245,6 +247,33 @@ docker run -p 3000:3000 pmsi-dagster
 
 ---
 
+## 📊 Monitoring — Prometheus + Grafana
+
+Le projet inclut un stack de monitoring complet via docker-compose : Prometheus collecte les métriques applicatives (FastAPI, PostgreSQL) et Grafana les visualise dans un dashboard dédié.
+
+### Services
+- **Prometheus** (`http://localhost:9090`) — collecte des métriques toutes les 15s
+- **Grafana** (`http://localhost:3001`) — visualisation, login `admin` / mot de passe défini dans `.env`
+- **postgres_exporter** — expose les métriques PostgreSQL au format Prometheus
+
+### Targets surveillées
+| Target | Endpoint | Métrique |
+|---|---|---|
+| FastAPI | `fastapi:8000/metrics` | Requêtes HTTP, latence, taux d'erreur |
+| PostgreSQL | `postgres_exporter:9187` | Connexions, requêtes, santé de la base |
+| Prometheus | `localhost:9090` | Auto-monitoring |
+
+### Dashboard Grafana
+![Dashboard Grafana - Monitoring FastAPI](images/monitoring/PMSI-Grafana.png)
+> Visualisation du taux de requêtes HTTP par endpoint (`/`, `/metrics`, `/predict`)
+
+### Lancer le monitoring
+```bash
+docker-compose up -d prometheus grafana postgres_exporter
+```
+Puis ouvrir `http://localhost:3001` (Grafana) et `http://localhost:9090/targets` (Prometheus) pour vérifier l'état des services.
+
+---
 ## 🛠️ Technologies utilisées
 
 | Technologie | Usage |
@@ -257,6 +286,8 @@ docker run -p 3000:3000 pmsi-dagster
 | Docker | Conteneurisation |
 | GitHub Actions | CI/CD automatisé |
 | Ollama + Llama 3.2 | Agent LLM local |
+| Prometheus | Collecte de métriques |
+| Grafana | Visualisation / dashboards |
 | Linux / WSL | Environnement d'exécution |
 
 ---

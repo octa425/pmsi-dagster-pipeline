@@ -23,5 +23,5 @@ scrape_configs:
   # PostgreSQL — métriques base de données
   - job_name: 'postgres'
     static_configs:
-      - targets: ['postgres:5432']
+      - targets: ['postgres_exporter:9187']
 

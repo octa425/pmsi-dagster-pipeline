@@ -24,6 +24,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
+from prometheus_fastapi_instrumentator import Instrumentator
+Instrumentator().instrument(app).expose(app)
+
 class DonneesPatient(BaseModel):
     dp: str
     pathologie: str

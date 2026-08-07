@@ -13,3 +13,4 @@ numpy
 python-dotenv
 streamlit
 ollama
+prometheus-fastapi-instrumentator

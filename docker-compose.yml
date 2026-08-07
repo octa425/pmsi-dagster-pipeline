@@ -28,6 +28,19 @@ services:
       retries: 5
     restart: unless-stopped
 
+  # ── SERVICE : Postgres Exporter ─────────────────────
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: pmsi_postgres_exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:${DB_PASSWORD}@postgres:5432/hopital?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   # ── SERVICE 2 : Ollama + llama3.2 ──────────────────
   ollama:
     image: ollama/ollama
