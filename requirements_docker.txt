@@ -5,3 +5,11 @@ psycopg2-binary
 pandas
 openpyxl
 pyarrow
+fastapi
+uvicorn
+joblib
+scikit-learn
+numpy
+python-dotenv
+streamlit
+ollama

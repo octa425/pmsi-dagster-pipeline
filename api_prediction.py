@@ -3,9 +3,20 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 
-modele = joblib.load("model_rf.pkl")
-encodeur_dp = joblib.load("encodeur_dp.pkl")
-encodeur_pathologie = joblib.load("encodeur_pathologie.pkl")
+try:
+    modele = joblib.load("model_rf.pkl")
+    print("Modèle chargé avec succès !")
+except FileNotFoundError:
+    modele = None
+    print("AVERTISSEMENT : model_rf.pkl introuvable — API en mode dégradé")
+try:
+    encodeur_dp = joblib.load("encodeur_dp.pkl")
+    encodeur_pathologie = joblib.load("encodeur_pathologie.pkl")
+    print("Encodeurs chargés avec succès !")
+except FileNotFoundError:
+    encodeur_dp = None
+    encodeur_pathologie = None
+    print("AVERTISSEMENT : encodeurs introuvables")
 
 app = FastAPI(
     title="API Prediction Readmission PMSI",
@@ -29,7 +40,11 @@ def health():
 
 @app.post("/predict")
 def predire_readmission(patient: DonneesPatient):
-
+    if modele is None or encodeur_dp is None or encodeur_pathologie is None:
+        return {
+            "erreur": "Modèle ou encodeurs non disponibles",
+            "solution": "Lancez sauvegarder_modele.py d'abord"
+        }
     if patient.dp not in encodeur_dp.classes_:
         raise HTTPException(
             status_code=400,
