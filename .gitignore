@@ -15,3 +15,5 @@ __pycache__/
 logs/
 rag_env/
 benchmark_results_*.json
+sortie_benchmark*.log
+benchmark_results_*.json

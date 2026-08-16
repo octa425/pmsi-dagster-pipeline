@@ -116,6 +116,20 @@ un GROUP BY sur cette colonne normale, sinon la requete echoue.
 Si tu veux juste un total sans repartition, ne selectionne PAS la colonne
 normale : SELECT COUNT(*) FROM ic_couts_sejours
 
+IMPORTANT - Sous-requetes correlees (comparaison a une moyenne PAR GROUPE) :
+Si la question compare une valeur a la moyenne d'un GROUPE precis (ex: "superieur
+a la moyenne du meme GHM", "au-dessus de la moyenne de son unite"), la sous-requete
+DOIT etre correlee avec la ligne externe via un alias explicite. Un simple GROUP BY
+isole dans la sous-requete est INCORRECT et provoque une erreur SQL (plusieurs
+lignes renvoyees au lieu d'une seule valeur).
+  Correct   : SELECT * FROM ic_couts_sejours a WHERE cout_sejour > (
+                  SELECT AVG(cout_sejour) FROM ic_couts_sejours b WHERE b.ghm = a.ghm)
+  Incorrect : SELECT * FROM ic_couts_sejours WHERE cout_sejour > (
+                  SELECT AVG(cout_sejour) FROM ic_couts_sejours GROUP BY ghm)
+Si la comparaison est a la moyenne GLOBALE (pas par groupe), une sous-requete simple
+suffit, sans alias ni correlation :
+  SELECT * FROM ic_couts_sejours WHERE cout_sejour > (SELECT AVG(cout_sejour) FROM ic_couts_sejours)
+
 IMPORTANT - Perimetre des donnees disponibles :
 Les tables ci-dessus ne contiennent QUE des donnees sur l'insuffisance cardiaque
 en France (pas d'autres pays, pas d'autres pathologies que celles listees).
@@ -146,6 +160,11 @@ RAPPEL FINAL AVANT DE REPONDRE :
 - Le FROM doit imperativement utiliser le nom complet pmsi_mco_analytics.nom_table
 - Ne remplace jamais un concept absent (mortalite) par une colonne existante
   qui mesure autre chose (readmis_30j = readmission, pas mortalite)
+- Si comparaison a une moyenne PAR GROUPE (ex: "moyenne du meme GHM") : la
+  sous-requete doit utiliser DEUX alias distincts de la meme table (a et b),
+  relies par WHERE b.colonne_groupe = a.colonne_groupe. Ne jamais mettre
+  GROUP BY seul dans une sous-requete de comparaison, ca renvoie plusieurs
+  lignes et fait echouer la requete.
 
 Question : {question}
 # Dans agent_llm_pmsi.py, ajouter dans SCHEMA_BD :

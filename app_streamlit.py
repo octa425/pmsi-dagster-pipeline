@@ -16,6 +16,7 @@ load_dotenv()
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "rag"))
 
 from agent_llm_pmsi import generer_sql, verifier_requete, executer_sql, reformuler_reponse
+from monitoring import enregistrer_trace
 
 # ── Configuration de la page ──
 st.set_page_config(
@@ -137,6 +138,15 @@ st.divider()
 # ── Sidebar ──
 with st.sidebar:
     st.header("ℹ️ Informations")
+
+    try:
+        nb_sejours = execute_query(
+            "SELECT COUNT(*) AS n FROM pmsi_mco_analytics.ic_couts_sejours"
+        )["n"][0]
+        nb_sejours_texte = f"{nb_sejours:,}".replace(",", " ")
+    except Exception:
+        nb_sejours_texte = "N/A"
+
     st.markdown(f"""
     **Utilisateur :** {nom_complet}
 
@@ -149,7 +159,7 @@ with st.sidebar:
     **Modèle :** llama3.2 (local)
 
     **Tables disponibles :**
-    - `ic_couts_sejours` : 2 312 séjours IC
+    - `ic_couts_sejours` : {nb_sejours_texte} séjours IC
     - `dataset_ml` : Variables ML
 
     **Sécurité SQL :**
@@ -230,12 +240,27 @@ if envoyer and question.strip():
         if not valide:
             st.error(f"⛔ SÉCURITÉ : {message_securite}")
             st.code(sql, language="sql")
+            enregistrer_trace(
+                question, message_securite,
+                round(time.time() - debut, 2),
+                "SQL", True, message_securite
+            )
 
         elif "HORS_PERIMETRE" in sql.upper():
             st.warning("⚠️ Cette question est hors du périmètre des données disponibles.")
+            enregistrer_trace(
+                question, "Hors perimetre",
+                round(time.time() - debut, 2),
+                "SQL", False, "hors_perimetre"
+            )
 
         elif "CONCEPT_ABSENT" in sql.upper():
             st.warning("⚠️ Ce concept n'existe pas dans les données disponibles.")
+            enregistrer_trace(
+                question, "Concept absent",
+                round(time.time() - debut, 2),
+                "SQL", False, "concept_absent"
+            )
 
         else:
             try:
@@ -281,9 +306,29 @@ if envoyer and question.strip():
                     "duree"       : duree_sql + duree_pg + duree_ref
                 })
 
+                enregistrer_trace(
+                    question,
+                    reponse,
+                    duree_sql + duree_pg + duree_ref,
+                    "SQL",
+                    False,
+                    None
+                )
+
             except Exception as e:
                 st.error(f"❌ Erreur SQL : {e}")
+                with st.expander("🔍 Voir la requête SQL générée (échouée)"):
+                    st.code(sql, language="sql")
                 st.info("Essayez de reformuler votre question.")
+
+                enregistrer_trace(
+                    question,
+                    f"Erreur : {e}",
+                    round(time.time() - debut, 2),
+                    "SQL",
+                    True,
+                    str(e)
+                )
 
 # ── Historique ──
 if st.session_state["historique"]:
@@ -382,6 +427,36 @@ if role == "administrateur":
             st.metric("Erreurs SQL", int(df_global["total_erreurs"][0]))
         with col5:
             st.metric("Aujourd'hui", int(df_global["questions_aujd"][0]))
+
+    except Exception as e:
+        st.error(f"Erreur tableau de bord : {e}")
+
+# ══════════════════════════════════════════════════════
+# VUE DIRECTION — tableau de bord synthetique, sans outils d'administration
+# ══════════════════════════════════════════════════════
+elif role == "direction":
+    st.divider()
+    st.subheader("📈 Tableau de bord — Vue Direction")
+    try:
+        df_direction = execute_query("""
+            SELECT
+                COUNT(*)                               AS total_questions,
+                COUNT(DISTINCT utilisateur)            AS nb_utilisateurs,
+                ROUND(AVG(duree_secondes)::numeric, 1) AS duree_moy_s,
+                COUNT(CASE WHEN DATE(horodatage) = CURRENT_DATE
+                      THEN 1 END)                      AS questions_aujd
+            FROM pmsi_mco_analytics.monitoring_llm
+        """)
+
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Total questions", int(df_direction["total_questions"][0]))
+        with col2:
+            st.metric("Utilisateurs actifs", int(df_direction["nb_utilisateurs"][0]))
+        with col3:
+            st.metric("Durée moyenne", f"{df_direction['duree_moy_s'][0]}s")
+        with col4:
+            st.metric("Aujourd'hui", int(df_direction["questions_aujd"][0]))
 
     except Exception as e:
         st.error(f"Erreur tableau de bord : {e}")

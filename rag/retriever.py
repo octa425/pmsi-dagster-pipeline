@@ -23,7 +23,7 @@ def rechercher_documents(question, top_k=3):
         dbname=os.environ["DB_NAME"],
         user=os.environ["DB_USER"],
         password=os.environ["DB_PASSWORD"],
-        options="-c search_path=pmsi_mco_analytics"
+        options="-c search_path=pmsi_mco_analytics,public"
     )
     cur = conn.cursor()
 
