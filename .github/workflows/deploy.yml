@@ -5,9 +5,30 @@ on:
     branches: [ main ]
 
 jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v3
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances de test
+        run: |
+          pip install fastapi uvicorn pytest httpx \
+          prometheus-fastapi-instrumentator \
+          joblib scikit-learn
+
+      - name: Lancer les tests pytest
+        run: pytest test_api_prediction.py -v
+
   build-and-push:
     runs-on: ubuntu-latest
-
+    needs: test
     steps:
       - name: Recuperer le code
         uses: actions/checkout@v3

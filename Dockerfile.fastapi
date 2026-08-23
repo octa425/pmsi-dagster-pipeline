@@ -1,14 +1,12 @@
 FROM python:3.11-slim
-
 WORKDIR /app
-
 COPY requirements_docker.txt .
 RUN pip install --no-cache-dir -r requirements_docker.txt
-RUN pip install --no-cache-dir fastapi uvicorn prometheus-client joblib scikit-learn
-
+RUN pip install --no-cache-dir fastapi uvicorn prometheus-client joblib scikit-learn prometheus-fastapi-instrumentator
 COPY api_prediction.py .
 COPY sauvegarder_modele.py .
-
+COPY model_rf.pkl .
+COPY encodeur_dp.pkl .
+COPY encodeur_pathologie.pkl .
 EXPOSE 8000
-
 CMD ["uvicorn", "api_prediction:app", "--host", "0.0.0.0", "--port", "8000"]
