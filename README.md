@@ -1,4 +1,6 @@
 # pmsi-dagster-pipeline
+
+[![CI/CD](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml/badge.svg)](https://github.com/octa425/pmsi-dagster-pipeline/actions/workflows/deploy.yml)
 ## Interface de démonstration
 
 ![Interface Agent IA PMSI](images/interface_streamlit_agent_pmsi.png)
