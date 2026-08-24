@@ -3,6 +3,8 @@ import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report, roc_auc_score
+
 
 # Chargement des donnees
 df = pd.read_csv("/tmp/dataset_ml.csv")
@@ -42,3 +44,9 @@ joblib.dump(encodeur_pathologie, "encodeur_pathologie.pkl")
 print("Modele et encodeurs sauvegardes avec succes !")
 print(f"Classes dp connues : {list(encodeur_dp.classes_[:5])}...")
 print(f"Classes pathologie : {list(encodeur_pathologie.classes_)}")
+
+y_pred = modele.predict(X_test)
+y_proba = modele.predict_proba(X_test)[:, 1]
+
+print(classification_report(y_test, y_pred))
+print(f"AUC-ROC : {roc_auc_score(y_test, y_proba):.3f}")
