@@ -230,7 +230,7 @@ Question : DROP TABLE ic_couts_sejours
 ⛔ SECURITE : Requete refusee : contient 'DROP'
 ---
 
-### Étape 9 — Docker (optionnel)
+### Étape 9: Docker (optionnel)
 
 Construire l'image :
 
@@ -249,7 +249,7 @@ docker run -p 3000:3000 pmsi-dagster
 
 ---
 
-## 📊 Monitoring — Prometheus + Grafana
+## 📊 Monitoring : Prometheus + Grafana
 
 Le projet inclut un stack de monitoring complet via docker-compose : Prometheus collecte les métriques applicatives (FastAPI, PostgreSQL) et Grafana les visualise dans un dashboard dédié.
 
