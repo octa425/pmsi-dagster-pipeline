@@ -17,6 +17,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "rag"))
 
 from agent_llm_pmsi import generer_sql, verifier_requete, executer_sql, reformuler_reponse
 from monitoring import enregistrer_trace
+from router import detecter_intention
+from agent_rag import repondre
 
 # ── Configuration de la page ──
 st.set_page_config(
@@ -117,17 +119,14 @@ if st.session_state["utilisateur"] is None:
 # ÉTAPE 2 — INTERFACE PRINCIPALE (après connexion)
 # ══════════════════════════════════════════════════════
 
-# Récupérer l'utilisateur connecté
 utilisateur = st.session_state["utilisateur"]
 nom_complet = f"{utilisateur['prenom']} {utilisateur['nom']}"
 service     = utilisateur["service"]
 role        = utilisateur["role"]
 
-# ── Titre principal ──
 st.title("🏥 Agent IA PMSI Insuffisance Cardiaque")
 st.caption(f"Connecté : {nom_complet} | {service} | 100% local RGPD")
 
-# Bouton déconnexion
 if st.button("Se déconnecter 🚪", key="deconnexion"):
     st.session_state["utilisateur"] = None
     st.session_state["historique"]  = []
@@ -169,7 +168,6 @@ with st.sidebar:
     - ❌ UPDATE bloqué
     """)
 
-    # ── Monitoring ──
     st.divider()
     st.header("📈 Monitoring")
 
@@ -201,6 +199,8 @@ with st.sidebar:
         "Quel est le tarif total ATIH ?",
         "Combien de séjours par unité médicale ?",
         "Combien de patients réadmis à J30 ?",
+        "Que signifie le GHM 05M041 ?",
+        "Qu'est-ce que l'insuffisance cardiaque ?",
     ]
     for exemple in exemples:
         if st.button(exemple, use_container_width=True):
@@ -234,101 +234,120 @@ if envoyer and question.strip():
     with st.spinner("L'agent réfléchit..."):
         debut = time.time()
 
-        sql = generer_sql(question)
-        valide, message_securite = verifier_requete(sql)
+        # ── ROUTEUR : RAG ou SQL ? ──
+        intention = detecter_intention(question)
 
-        if not valide:
-            st.error(f"⛔ SÉCURITÉ : {message_securite}")
-            st.code(sql, language="sql")
-            enregistrer_trace(
-                question, message_securite,
-                round(time.time() - debut, 2),
-                "SQL", True, message_securite
-            )
+        if intention == "rag":
+            reponse_rag = repondre(question)
+            duree_rag = round(time.time() - debut, 2)
 
-        elif "HORS_PERIMETRE" in sql.upper():
-            st.warning("⚠️ Cette question est hors du périmètre des données disponibles.")
-            enregistrer_trace(
-                question, "Hors perimetre",
-                round(time.time() - debut, 2),
-                "SQL", False, "hors_perimetre"
-            )
+            st.success("📚 Réponse documentaire (RAG)")
+            st.write(reponse_rag)
+            st.caption(f"Durée : {duree_rag}s | Source : RAG vectoriel (pgvector)")
 
-        elif "CONCEPT_ABSENT" in sql.upper():
-            st.warning("⚠️ Ce concept n'existe pas dans les données disponibles.")
+            st.session_state["historique"].append({
+                "question"    : question,
+                "sql"         : "— RAG —",
+                "reponse"     : reponse_rag,
+                "utilisateur" : nom_complet,
+                "duree"       : duree_rag
+            })
+
             enregistrer_trace(
-                question, "Concept absent",
-                round(time.time() - debut, 2),
-                "SQL", False, "concept_absent"
+                question, reponse_rag, duree_rag, "RAG", False, None
             )
 
         else:
-            try:
-                debut_pg  = time.time()
-                colonnes, resultats = executer_sql(sql)
-                duree_pg  = round(time.time() - debut_pg, 2)
+            # ── BRANCHE TEXT-TO-SQL ──
+            sql = generer_sql(question)
+            valide, message_securite = verifier_requete(sql)
 
-                debut_ref = time.time()
-                reponse   = reformuler_reponse(question, sql, colonnes, resultats)
-                duree_ref = round(time.time() - debut_ref, 2)
-                duree_sql = round(debut_pg - debut, 2)
+            if not valide:
+                st.error(f"⛔ SÉCURITÉ : {message_securite}")
+                st.code(sql, language="sql")
+                enregistrer_trace(
+                    question, message_securite,
+                    round(time.time() - debut, 2),
+                    "SQL", True, message_securite
+                )
 
-                st.success(f"💬 {reponse}")
+            elif "HORS_PERIMETRE" in sql.upper():
+                st.warning("⚠️ Cette question est hors du périmètre des données disponibles.")
+                enregistrer_trace(
+                    question, "Hors perimetre",
+                    round(time.time() - debut, 2),
+                    "SQL", False, "hors_perimetre"
+                )
 
-                with st.expander("🔍 Voir la requête SQL générée"):
-                    st.code(sql, language="sql")
-                    st.caption(
-                        f"Génération SQL : {duree_sql}s | "
-                        f"PostgreSQL : {duree_pg}s | "
-                        f"Reformulation : {duree_ref}s"
+            elif "CONCEPT_ABSENT" in sql.upper():
+                st.warning("⚠️ Ce concept n'existe pas dans les données disponibles.")
+                enregistrer_trace(
+                    question, "Concept absent",
+                    round(time.time() - debut, 2),
+                    "SQL", False, "concept_absent"
+                )
+
+            else:
+                try:
+                    debut_pg  = time.time()
+                    colonnes, resultats = executer_sql(sql)
+                    duree_pg  = round(time.time() - debut_pg, 2)
+
+                    debut_ref = time.time()
+                    reponse   = reformuler_reponse(question, sql, colonnes, resultats)
+                    duree_ref = round(time.time() - debut_ref, 2)
+                    duree_sql = round(debut_pg - debut, 2)
+
+                    st.success(f"💬 {reponse}")
+
+                    with st.expander("🔍 Voir la requête SQL générée"):
+                        st.code(sql, language="sql")
+                        st.caption(
+                            f"Génération SQL : {duree_sql}s | "
+                            f"PostgreSQL : {duree_pg}s | "
+                            f"Reformulation : {duree_ref}s"
+                        )
+
+                    with st.expander("📊 Voir les résultats bruts"):
+                        if resultats:
+                            df = pd.DataFrame(resultats, columns=colonnes)
+                            st.dataframe(df, use_container_width=True)
+                        else:
+                            st.info("Aucun résultat retourné.")
+
+                    col_m1, col_m2, col_m3 = st.columns(3)
+                    with col_m1:
+                        st.metric("Génération SQL", f"{duree_sql}s")
+                    with col_m2:
+                        st.metric("PostgreSQL", f"{duree_pg}s")
+                    with col_m3:
+                        st.metric("Reformulation", f"{duree_ref}s")
+
+                    st.session_state["historique"].append({
+                        "question"    : question,
+                        "sql"         : sql,
+                        "reponse"     : reponse,
+                        "utilisateur" : nom_complet,
+                        "duree"       : duree_sql + duree_pg + duree_ref
+                    })
+
+                    enregistrer_trace(
+                        question, reponse,
+                        duree_sql + duree_pg + duree_ref,
+                        "SQL", False, None
                     )
 
-                with st.expander("📊 Voir les résultats bruts"):
-                    if resultats:
-                        df = pd.DataFrame(resultats, columns=colonnes)
-                        st.dataframe(df, use_container_width=True)
-                    else:
-                        st.info("Aucun résultat retourné.")
+                except Exception as e:
+                    st.error(f"❌ Erreur SQL : {e}")
+                    with st.expander("🔍 Voir la requête SQL générée (échouée)"):
+                        st.code(sql, language="sql")
+                    st.info("Essayez de reformuler votre question.")
 
-                col_m1, col_m2, col_m3 = st.columns(3)
-                with col_m1:
-                    st.metric("Génération SQL", f"{duree_sql}s")
-                with col_m2:
-                    st.metric("PostgreSQL", f"{duree_pg}s")
-                with col_m3:
-                    st.metric("Reformulation", f"{duree_ref}s")
-
-                st.session_state["historique"].append({
-                    "question"    : question,
-                    "sql"         : sql,
-                    "reponse"     : reponse,
-                    "utilisateur" : nom_complet,
-                    "duree"       : duree_sql + duree_pg + duree_ref
-                })
-
-                enregistrer_trace(
-                    question,
-                    reponse,
-                    duree_sql + duree_pg + duree_ref,
-                    "SQL",
-                    False,
-                    None
-                )
-
-            except Exception as e:
-                st.error(f"❌ Erreur SQL : {e}")
-                with st.expander("🔍 Voir la requête SQL générée (échouée)"):
-                    st.code(sql, language="sql")
-                st.info("Essayez de reformuler votre question.")
-
-                enregistrer_trace(
-                    question,
-                    f"Erreur : {e}",
-                    round(time.time() - debut, 2),
-                    "SQL",
-                    True,
-                    str(e)
-                )
+                    enregistrer_trace(
+                        question, f"Erreur : {e}",
+                        round(time.time() - debut, 2),
+                        "SQL", True, str(e)
+                    )
 
 # ── Historique ──
 if st.session_state["historique"]:
@@ -352,7 +371,7 @@ if st.session_state["historique"]:
         st.rerun()
 
 # ══════════════════════════════════════════════════════
-# VUE ADMINISTRATEUR — uniquement pour le rôle admin
+# VUE ADMINISTRATEUR
 # ══════════════════════════════════════════════════════
 if role == "administrateur":
     st.divider()
@@ -401,7 +420,6 @@ if role == "administrateur":
             except Exception as e:
                 st.error(f"Erreur stats : {e}")
 
-    # Métriques globales
     st.divider()
     st.subheader("📈 Tableau de bord global")
     try:
@@ -431,9 +449,6 @@ if role == "administrateur":
     except Exception as e:
         st.error(f"Erreur tableau de bord : {e}")
 
-# ══════════════════════════════════════════════════════
-# VUE DIRECTION — tableau de bord synthetique, sans outils d'administration
-# ══════════════════════════════════════════════════════
 elif role == "direction":
     st.divider()
     st.subheader("📈 Tableau de bord — Vue Direction")
