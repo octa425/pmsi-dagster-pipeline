@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════
-# INTERFACE STREAMLIT — Agent IA PMSI
+# INTERFACE STREAMLIT Agent IA PMSI
 # Avec authentification utilisateur + monitoring tracé
 # ══════════════════════════════════════════════════════
 
@@ -259,6 +259,11 @@ if envoyer and question.strip():
 
         else:
             # ── BRANCHE TEXT-TO-SQL ──
+            MOTS_DESTRUCTEURS_FR = ["supprime", "efface", "detruit", "suppression", "destruction", "delete", "drop"]
+            if any(mot in question.lower() for mot in MOTS_DESTRUCTEURS_FR):
+                st.error("⛔ Question destructrice détectée. Seules les questions de consultation sont autorisées.")
+                st.stop()
+
             sql = generer_sql(question)
             valide, message_securite = verifier_requete(sql)
 
