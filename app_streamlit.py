@@ -234,6 +234,12 @@ if envoyer and question.strip():
     with st.spinner("L'agent réfléchit..."):
         debut = time.time()
 
+        # ── FILTRE DESTRUCTEUR (avant tout routage) ──
+        MOTS_DESTRUCTEURS_FR = ["supprime", "efface", "detruit", "suppression", "destruction", "delete", "drop", "truncate", "update", "modifie"]
+        if any(mot in question.lower() for mot in MOTS_DESTRUCTEURS_FR):
+            st.error("⛔ Question destructrice détectée. Seules les questions de consultation sont autorisées.")
+            st.stop()
+
         # ── ROUTEUR : RAG ou SQL ? ──
         intention = detecter_intention(question)
 
